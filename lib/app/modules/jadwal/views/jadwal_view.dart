@@ -13,11 +13,11 @@ class JadwalView extends GetView<JadwalController> {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: Color(0xfff9f9f9),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(40), // Atur tinggi di sini
+      backgroundColor: const Color(0xfff9f9f9),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(40), // Atur tinggi di sini
         child: Material(
-          color: const Color(0xFFf9f9f9),
+          color: Color(0xFFf9f9f9),
           elevation: 0,
           child: SafeArea(
             child: SizedBox(
@@ -44,7 +44,7 @@ class JadwalView extends GetView<JadwalController> {
       body: SafeArea(
         top: false,
         child: Container(
-          color: Color(0xfff9f9f9),
+          color: const Color(0xfff9f9f9),
           child: Column(
             children: [
               Expanded(
@@ -140,17 +140,17 @@ class JadwalView extends GetView<JadwalController> {
                               ),
                               const SizedBox(height: 8),
                               Card(
-                                color: Color(0xffffffff),
+                                color: const Color(0xffffffff),
                                 elevation: 4,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(16),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       Row(
                                         children: [
                                           SizedBox(
@@ -242,10 +242,10 @@ class JadwalView extends GetView<JadwalController> {
                                             topRight: Radius.circular(8),
                                           ),
                                         ),
-                                        child: Row(
+                                        child: const Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
-                                          children: const [
+                                          children: [
                                             Text(
                                               'Tegal - Jakarta',
                                               style: TextStyle(
@@ -268,12 +268,12 @@ class JadwalView extends GetView<JadwalController> {
                                     ),
                                     Container(
                                       color: const Color(0xFFf9f9f9),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(16.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: const [
+                                          children: [
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

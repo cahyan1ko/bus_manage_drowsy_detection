@@ -167,7 +167,7 @@ class DetectionController extends GetxController {
 
       if (faces.isNotEmpty) {
         final face = faces.first;
-        final inputSize = 224;
+        const inputSize = 224;
 
         final inputFloat32 = cropAndResizeFaceFromCameraImage(
             image, face.boundingBox, inputSize);

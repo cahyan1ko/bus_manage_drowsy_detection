@@ -2,17 +2,12 @@ import 'package:capstone_bus_manage/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import '../controllers/profil_controller.dart';
 
 import '../../../widgets/bottom_nav_bar.dart';
 
-class ProfilView extends StatelessWidget {
-  // Contoh data statis
-  final String nama = "John Doe";
-  final String email = "john.doe@example.com";
-  final String nomorHp = "081234567890";
-  final String alamat = "Jl. Merdeka No. 123, Jakarta";
-
-  const ProfilView({Key? key}) : super(key: key);
+class ProfilView extends GetView<ProfilController> {
+  const ProfilView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +27,7 @@ class ProfilView extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(Icons.help_outline),
                 ),
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Profil Saya',
                     style: TextStyle(
@@ -64,7 +59,7 @@ class ProfilView extends StatelessWidget {
                     height: 120,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Image(
+                      child: const Image(
                         image: NetworkImage('https://i.pravatar.cc/300'),
                         fit: BoxFit.cover,
                         width: 120,
@@ -84,7 +79,7 @@ class ProfilView extends StatelessWidget {
                         height: 35,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          color: Color(0xFFE25353),
+                          color: const Color(0xFFE25353),
                         ),
                         child: const Icon(
                           Icons.edit, // icon pensil
@@ -97,20 +92,22 @@ class ProfilView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                nama,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                email,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Obx(() => Text(
+                    controller.nama.value,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  )),
+
+              Obx(() => Text(
+                    controller.email.value,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )),
+
               const SizedBox(height: 20),
 
-              Row(
+              const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
@@ -118,10 +115,10 @@ class ProfilView extends StatelessWidget {
                     color: Colors.green,
                     size: 18, // bisa disesuaikan
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   Text(
                     "Terverifikasi",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontStyle: FontStyle.normal,
                       color: Colors.black,
                       fontSize: 14,
@@ -135,18 +132,19 @@ class ProfilView extends StatelessWidget {
               const SizedBox(height: 10),
 
               // Detail profil lain pakai menu widget
-              ProfileMenuWidget(
-                title: 'Nomor HP',
-                icon: Icons.phone,
-                subtitle: nomorHp,
-                onPress: () {},
-              ),
-              ProfileMenuWidget(
-                title: 'Alamat',
-                icon: Icons.home,
-                subtitle: alamat,
-                onPress: () {},
-              ),
+              Obx(() => ProfileMenuWidget(
+                    title: 'Nomor HP',
+                    icon: Icons.phone,
+                    subtitle: controller.nomorHp.value,
+                    onPress: () {},
+                  )),
+
+              Obx(() => ProfileMenuWidget(
+                    title: 'Alamat',
+                    icon: Icons.home,
+                    subtitle: controller.alamat.value,
+                    onPress: () {},
+                  )),
 
               const Divider(),
               const SizedBox(height: 10),
@@ -202,8 +200,10 @@ class ProfilView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await controller.logout();
+                                    },
                                     style: TextButton.styleFrom(
                                       backgroundColor: const Color(0xFFF4F4F4),
                                       padding: const EdgeInsets.symmetric(
@@ -288,14 +288,14 @@ class ProfileMenuWidget extends StatelessWidget {
   final String? subtitle;
 
   const ProfileMenuWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.onPress,
     this.textColor,
     this.endIcon = true,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

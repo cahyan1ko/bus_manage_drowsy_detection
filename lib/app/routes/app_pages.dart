@@ -40,7 +40,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.BERANDA,
-      page: () => BerandaView(),
+      page: () => const BerandaView(),
       binding: BerandaBinding(),
     ),
     GetPage(
@@ -70,7 +70,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETECTION,
-      page: () => DetectionView(),
+      page: () => const DetectionView(),
       binding: DetectionBinding(),
     ),
     GetPage(
@@ -80,12 +80,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FORGOT_PASSWORD,
-      page: () => ForgotPasswordView(),
+      page: () => const ForgotPasswordView(),
       binding: AuthForgotPasswordBinding(),
     ),
     GetPage(
       name: _Paths.VERIFY_OTP,
-      page: () => VerifyOtpView(),
+      page: () => const VerifyOtpView(),
       binding: AuthVerifyOtpBinding(),
     ),
     GetPage(

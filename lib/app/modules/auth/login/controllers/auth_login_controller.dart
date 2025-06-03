@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../data/providers/api_services.dart'; // sesuaikan pathnya
 import '../../../../../app/routes/app_pages.dart';
 
 class AuthLoginController extends GetxController {
@@ -8,31 +11,31 @@ class AuthLoginController extends GetxController {
   var errorMessage = ''.obs;
   var isLoading = false.obs;
 
-  void login() {
+  void login() async {
     isLoading.value = true;
-    Future.delayed(Duration(seconds: 1), () {
+    errorMessage.value = '';
+
+    if (username.value.isEmpty || password.value.isEmpty) {
       isLoading.value = false;
-      Get.showSnackbar(
-        GetSnackBar(
-          backgroundColor: Color(0xfff4f4f4),
-          duration: Duration(seconds: 2),
-          borderRadius: 8,
-          margin: EdgeInsets.all(12),
-          snackPosition: SnackPosition.TOP,
-          animationDuration: Duration(milliseconds: 500),
-          icon: Icon(Icons.check_circle, color: Colors.black),
-          shouldIconPulse: true,
-          titleText: Text(
-            'Selamat datang!',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          messageText: Text(
-            'Semoga harimu menyenangkan :)',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      );
+      errorMessage.value = 'Username dan password wajib diisi';
+      return;
+    }
+
+    try {
+      final user = await ApiServices.login(username.value, password.value);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', user.token);
+
+      print('Token saved: ${prefs.getString('token')}');
+
+      isLoading.value = false;
+      Get.snackbar('Login Berhasil', 'Selamat datang!');
       Get.offAllNamed(Routes.BERANDA);
-    });
+    } catch (e) {
+      isLoading.value = false;
+      errorMessage.value = e.toString().replaceAll('Exception: ', '');
+      print("Error during login: $e"); // Cek pesan error di konsol
+    }
   }
 }

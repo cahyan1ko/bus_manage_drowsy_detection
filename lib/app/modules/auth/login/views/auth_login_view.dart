@@ -5,11 +5,14 @@ import '../../../../routes/app_pages.dart';
 
 class AuthLoginView extends StatelessWidget {
   AuthLoginView({super.key});
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final controller = Get.find<AuthLoginController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff4f4f4),
+      backgroundColor: const Color(0xfff4f4f4),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -32,10 +35,12 @@ class AuthLoginView extends StatelessWidget {
                       // Image.asset('assets/images/bro.png', width: 200),
                       // const SizedBox(height: 20),
                       TextField(
+                        onChanged: (value) => controller.username.value = value,
                         decoration: _inputDecoration('Email'),
                       ),
                       const SizedBox(height: 10),
                       TextField(
+                        onChanged: (value) => controller.password.value = value,
                         obscureText: true,
                         decoration: _inputDecoration('Password'),
                       ),
@@ -52,24 +57,32 @@ class AuthLoginView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          final controller = Get.find<AuthLoginController>();
-                          controller.login();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 48),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: const Color(0xFFE25353),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(color: Color(0xffffffff)),
-                        ),
-                      ),
+                      Obx(() => ElevatedButton(
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : controller.login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFE25353),
+                              foregroundColor: Colors.white,
+                              minimumSize: const Size(double.infinity, 50),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              textStyle: const TextStyle(fontSize: 18),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  )
+                                : const Text('Login'),
+                          )),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +122,7 @@ class AuthLoginView extends StatelessWidget {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.redAccent, // warna saat fokus, bisa sesuaikan
           width: 2,
         ),

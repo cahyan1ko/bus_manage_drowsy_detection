@@ -12,11 +12,6 @@ class AuthRegisterView extends StatefulWidget {
 class _AuthRegisterViewState extends State<AuthRegisterView> {
   final AuthRegisterController controller = Get.put(AuthRegisterController());
 
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _noHpController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   bool isLoading = false;
   String errorMessage = '';
 
@@ -41,22 +36,23 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
                   Text(errorMessage, style: const TextStyle(color: Colors.red)),
                 const SizedBox(height: 10),
                 TextField(
-                  controller: _usernameController,
+                  controller: controller.usernameController,
                   decoration: _inputDecoration('Username'),
                 ),
                 const SizedBox(height: 10),
                 TextField(
-                  controller: _emailController,
+                  controller: controller.emailController,
                   decoration: _inputDecoration('Email'),
                 ),
                 const SizedBox(height: 10),
                 TextField(
-                  controller: _noHpController,
+                  controller: controller.passwordController,
+                  obscureText: true,
                   decoration: _inputDecoration('Password'),
                 ),
                 const SizedBox(height: 10),
                 TextField(
-                  controller: _passwordController,
+                  controller: controller.confirmPasswordController,
                   obscureText: true,
                   decoration: _inputDecoration('Confirm Password'),
                 ),

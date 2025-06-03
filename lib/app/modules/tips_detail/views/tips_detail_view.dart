@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TipsDetailView extends StatelessWidget {
-  const TipsDetailView({Key? key}) : super(key: key);
+  const TipsDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +11,8 @@ class TipsDetailView extends StatelessWidget {
 
     if (args == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Tips Detail')),
-        body: Center(child: Text('Data tips tidak tersedia')),
+        appBar: AppBar(title: const Text('Tips Detail')),
+        body: const Center(child: Text('Data tips tidak tersedia')),
       );
     }
 

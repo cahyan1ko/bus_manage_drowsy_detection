@@ -16,11 +16,11 @@ class DetectionView extends GetView<DetectionController> {
       controller.startCamera();
     }
     return Scaffold(
-      backgroundColor: Color(0xfff9f9f9),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(40), // Atur tinggi di sini
+      backgroundColor: const Color(0xfff9f9f9),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(40), // Atur tinggi di sini
         child: Material(
-          color: const Color(0xFFf9f9f9),
+          color: Color(0xFFf9f9f9),
           elevation: 0,
           child: SafeArea(
             child: SizedBox(

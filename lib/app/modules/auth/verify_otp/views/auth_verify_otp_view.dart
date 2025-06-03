@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/auth_verify_otp_controller.dart';
 
 class VerifyOtpView extends StatefulWidget {
   const VerifyOtpView({super.key});
@@ -14,6 +15,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
   final List<TextEditingController> _controllers =
       List.generate(6, (index) => TextEditingController());
+
+  final AuthVerifyOtpController _controller =
+      Get.put(AuthVerifyOtpController());
 
   int _resendCooldown = 180;
   bool _canResend = false;
@@ -55,6 +59,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     for (final focusNode in _focusNodes) {
       focusNode.dispose();
     }
+    Get.delete<AuthVerifyOtpController>(); // bersihkan controller
     super.dispose();
   }
 
@@ -69,6 +74,16 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   String getOtp() {
     return _controllers.map((c) => c.text).join();
+  }
+
+  void _submitOtp() {
+    final otp = getOtp();
+    if (otp.length == 6) {
+      _controller.verifyOtp(otp);
+    } else {
+      Get.snackbar("Error", "OTP belum lengkap",
+          backgroundColor: Colors.redAccent, colorText: Colors.white);
+    }
   }
 
   @override
@@ -128,27 +143,29 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                   }),
                 ),
                 const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    final otp = getOtp();
-                    if (otp.length == 6) {
-                      Get.snackbar("Kode OTP", "OTP Anda: $otp");
-                      // TODO: Lanjutkan proses verifikasi...
-                    } else {
-                      Get.snackbar("Error", "OTP belum lengkap");
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE25353),
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 48),
-                    textStyle: const TextStyle(fontSize: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text("Verifikasi"),
-                ),
+                Obx(() => ElevatedButton(
+                      onPressed:
+                          _controller.isLoading.value ? null : _submitOtp,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFE25353),
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(double.infinity, 48),
+                        textStyle: const TextStyle(fontSize: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: _controller.isLoading.value
+                          ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text("Verifikasi"),
+                    )),
                 TextButton(
                   onPressed: _canResend
                       ? () {

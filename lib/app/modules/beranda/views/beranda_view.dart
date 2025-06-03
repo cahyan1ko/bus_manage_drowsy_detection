@@ -26,16 +26,16 @@ class _BerandaViewState extends State<BerandaView> {
   }
 
   final List<Widget> _pages = [
-    Center(child: Text('Home Page')),
-    Center(child: Text('Search Page')),
-    Center(child: Text('Profile Page')),
+    const Center(child: Text('Home Page')),
+    const Center(child: Text('Search Page')),
+    const Center(child: Text('Profile Page')),
   ];
 
   @override
   Widget build(BuildContext context) {
     int currentIndex = 0;
     return Scaffold(
-      backgroundColor: Color(0xfff9f9f9),
+      backgroundColor: const Color(0xfff9f9f9),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70),
         child: Container(
@@ -106,12 +106,12 @@ class _BerandaViewState extends State<BerandaView> {
                 color: Colors.red[50],
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Icon(Icons.directions_bus_filled,
+                  Icon(Icons.directions_bus_filled,
                       color: Colors.red, size: 40),
-                  const SizedBox(width: 16),
-                  const Expanded(
+                  SizedBox(width: 16),
+                  Expanded(
                     child: Text(
                       'Selamat bertugas! Cek jadwal perjalananmu hari ini.',
                       style: TextStyle(fontSize: 16),
@@ -129,7 +129,7 @@ class _BerandaViewState extends State<BerandaView> {
             Obx(() {
               final jadwal = controller.jadwalHariIni;
               if (jadwal.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text(
                     'Tidak ada jadwal hari ini',
                     style: TextStyle(
@@ -140,7 +140,7 @@ class _BerandaViewState extends State<BerandaView> {
                 );
               }
               return Card(
-                color: Color(0xFFffffff),
+                color: const Color(0xFFffffff),
                 elevation: 1,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -161,7 +161,7 @@ class _BerandaViewState extends State<BerandaView> {
                             context: context,
                             builder: (context) {
                               return Dialog(
-                                backgroundColor: Color(0xFFF4F4F4),
+                                backgroundColor: const Color(0xFFF4F4F4),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -176,7 +176,7 @@ class _BerandaViewState extends State<BerandaView> {
                                         fit: BoxFit.cover,
                                       ),
                                       const SizedBox(height: 16),
-                                      Text(
+                                      const Text(
                                         'Siap Berangkat?',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -185,7 +185,7 @@ class _BerandaViewState extends State<BerandaView> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      Text(
+                                      const Text(
                                         'Perjalanan akan segera dimulai. Tetap semangat dan hati-hati di jalan!',
                                         textAlign: TextAlign.center,
                                       ),
@@ -199,7 +199,7 @@ class _BerandaViewState extends State<BerandaView> {
                                                 Navigator.of(context).pop(),
                                             style: TextButton.styleFrom(
                                               backgroundColor:
-                                                  Color(0xFFF4F4F4),
+                                                  const Color(0xFFF4F4F4),
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 24,
@@ -228,7 +228,7 @@ class _BerandaViewState extends State<BerandaView> {
                                             },
                                             style: TextButton.styleFrom(
                                               backgroundColor:
-                                                  Color(0xFFE25353),
+                                                  const Color(0xFFE25353),
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 24,
@@ -391,7 +391,7 @@ class _BerandaViewState extends State<BerandaView> {
         width: 280,
         margin: const EdgeInsets.only(right: 12),
         child: Card(
-          color: Color(0xFFffffff),
+          color: const Color(0xFFffffff),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 3,

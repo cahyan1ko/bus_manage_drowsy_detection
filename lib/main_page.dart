@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:capstone_bus_manage/app/widgets/bottom_nav_bar.dart';
 
 class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
   @override
   State<MainPage> createState() => _MainPageState();
 }

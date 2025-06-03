@@ -22,15 +22,17 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
     }
+
 
     defaultConfig {
         applicationId "com.example.capstone_bus_manage"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutter.versionCode
-        versionName flutter.versionName
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
     }
 
 
@@ -51,6 +53,7 @@ flutter {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
     implementation 'com.google.mlkit:pose-detection:18.0.0-beta5'
     implementation 'com.google.mlkit:pose-detection-accurate:18.0.0-beta5'
 }

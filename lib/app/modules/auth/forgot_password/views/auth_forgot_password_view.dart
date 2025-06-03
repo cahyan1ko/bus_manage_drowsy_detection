@@ -20,7 +20,7 @@ class ForgotPasswordView extends GetView<AuthForgotPasswordController> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxWidth:
                         600, // Optional: supaya tidak terlalu melebar di layar besar
                   ),
@@ -100,7 +100,7 @@ class ForgotPasswordView extends GetView<AuthForgotPasswordController> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 iconSize: 28,
-                color: Color(0xFFE25353),
+                color: const Color(0xFFE25353),
                 onPressed: () => Get.back(),
               ),
             ),
@@ -125,7 +125,7 @@ class ForgotPasswordView extends GetView<AuthForgotPasswordController> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.redAccent, // warna saat fokus, bisa sesuaikan
           width: 2,
         ),

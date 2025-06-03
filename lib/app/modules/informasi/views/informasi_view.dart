@@ -9,8 +9,8 @@ class InformasiView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('InformasiView')),
-      body: Center(child: Text('Halaman Informasi - tanpa controller')),
+      appBar: AppBar(title: const Text('InformasiView')),
+      body: const Center(child: Text('Halaman Informasi - tanpa controller')),
     );
   }
 }
