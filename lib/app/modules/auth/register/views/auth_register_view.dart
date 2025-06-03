@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/auth_register_controller.dart';
 
 class AuthRegisterView extends StatefulWidget {
   const AuthRegisterView({super.key});
@@ -9,6 +10,8 @@ class AuthRegisterView extends StatefulWidget {
 }
 
 class _AuthRegisterViewState extends State<AuthRegisterView> {
+  final AuthRegisterController controller = Get.put(AuthRegisterController());
+
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _noHpController = TextEditingController();
@@ -17,39 +20,10 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
   bool isLoading = false;
   String errorMessage = '';
 
-  void register() async {
-    setState(() {
-      isLoading = true;
-      errorMessage = '';
-    });
-
-    // Simulasi proses register
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Contoh validasi dummy
-    if (_usernameController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _noHpController.text.isEmpty ||
-        _passwordController.text.isEmpty) {
-      setState(() {
-        errorMessage = "Semua field harus diisi.";
-        isLoading = false;
-      });
-    } else {
-      // Anggap sukses
-      setState(() {
-        isLoading = false;
-      });
-
-      // Navigasi atau tampilkan snackbar
-      Get.snackbar("Sukses", "Registrasi berhasil!");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff4f4f4),
+      backgroundColor: const Color(0xfff4f4f4),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Center(
@@ -64,7 +38,7 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
                 ),
                 const SizedBox(height: 16),
                 if (errorMessage.isNotEmpty)
-                  Text(errorMessage, style: TextStyle(color: Colors.red)),
+                  Text(errorMessage, style: const TextStyle(color: Colors.red)),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _usernameController,
@@ -88,7 +62,7 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: isLoading ? null : register,
+                  onPressed: isLoading ? null : controller.goToVerifyOtp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFE25353),
                     foregroundColor: Colors.white,
@@ -137,7 +111,7 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12), // radius lebih besar
+        borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
@@ -146,8 +120,8 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: Colors.redAccent, // warna saat fokus, bisa sesuaikan
+        borderSide: const BorderSide(
+          color: Colors.redAccent,
           width: 2,
         ),
       ),

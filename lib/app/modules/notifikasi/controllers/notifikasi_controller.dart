@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 
-class AuthRegisterController extends GetxController {
-  final count = 0.obs;
+class NotifikasiController extends GetxController {
+  //TODO: Implement NotifikasiController
 
+  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,8 +20,4 @@ class AuthRegisterController extends GetxController {
   }
 
   void increment() => count.value++;
-
-  void goToVerifyOtp() {
-    Get.toNamed('verify-otp');
-  }
 }

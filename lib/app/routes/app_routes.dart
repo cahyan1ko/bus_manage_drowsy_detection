@@ -13,6 +13,9 @@ abstract class Routes {
   static const DETECTION = _Paths.DETECTION;
   static const REGISTER = _Paths.REGISTER;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const VERIFY_OTP = _Paths.VERIFY_OTP;
+  static const NOTIFIKASI = _Paths.NOTIFIKASI;
+  static const INFORMASI = _Paths.INFORMASI;
 }
 
 abstract class _Paths {
@@ -27,4 +30,7 @@ abstract class _Paths {
   static const DETECTION = '/detection';
   static const REGISTER = '/register';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const VERIFY_OTP = '/verify-otp';
+  static const NOTIFIKASI = '/notifikasi';
+  static const INFORMASI = '/informasi';
 }

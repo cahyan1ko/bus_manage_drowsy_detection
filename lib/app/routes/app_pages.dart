@@ -7,12 +7,18 @@ import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
 import '../modules/auth/register/bindings/auth_register_binding.dart';
 import '../modules/auth/register/views/auth_register_view.dart';
+import '../modules/auth/verify_otp/bindings/auth_verify_otp_binding.dart';
+import '../modules/auth/verify_otp/views/auth_verify_otp_view.dart';
 import '../modules/beranda/bindings/beranda_binding.dart';
 import '../modules/beranda/views/beranda_view.dart';
 import '../modules/detection/bindings/detection_binding.dart';
 import '../modules/detection/views/detection_view.dart';
+import '../modules/informasi/bindings/informasi_binding.dart';
+import '../modules/informasi/views/informasi_view.dart';
 import '../modules/jadwal/bindings/jadwal_binding.dart';
 import '../modules/jadwal/views/jadwal_view.dart';
+import '../modules/notifikasi/bindings/notifikasi_binding.dart';
+import '../modules/notifikasi/views/notifikasi_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
@@ -76,6 +82,21 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => ForgotPasswordView(),
       binding: AuthForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.VERIFY_OTP,
+      page: () => VerifyOtpView(),
+      binding: AuthVerifyOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFIKASI,
+      page: () => const NotifikasiView(),
+      binding: NotifikasiBinding(),
+    ),
+    GetPage(
+      name: _Paths.INFORMASI,
+      page: () => const InformasiView(),
+      binding: InformasiBinding(),
     ),
   ];
 }

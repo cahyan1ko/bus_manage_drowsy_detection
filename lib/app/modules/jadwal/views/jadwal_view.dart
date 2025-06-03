@@ -14,9 +14,32 @@ class JadwalView extends GetView<JadwalController> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Color(0xfff9f9f9),
-      appBar: AppBar(
-        title: const Text('Halaman Jadwal'),
-        backgroundColor: Color(0xfff9f9f9),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(40), // Atur tinggi di sini
+        child: Material(
+          color: const Color(0xFFf9f9f9),
+          elevation: 0,
+          child: SafeArea(
+            child: SizedBox(
+              height: 40, // Penting: tambahkan height di child juga
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Jadwal',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       body: SafeArea(
         top: false,

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../app/routes/app_pages.dart';
 
@@ -8,12 +9,30 @@ class AuthLoginController extends GetxController {
   var isLoading = false.obs;
 
   void login() {
-    // Hilangkan semua validasi dan API call
     isLoading.value = true;
     Future.delayed(Duration(seconds: 1), () {
       isLoading.value = false;
-      Get.snackbar('Login Berhasil', 'Selamat datang!');
-      Get.offAllNamed(Routes.BERANDA); // Arahkan langsung ke BERANDA
+      Get.showSnackbar(
+        GetSnackBar(
+          backgroundColor: Color(0xfff4f4f4),
+          duration: Duration(seconds: 2),
+          borderRadius: 8,
+          margin: EdgeInsets.all(12),
+          snackPosition: SnackPosition.TOP,
+          animationDuration: Duration(milliseconds: 500),
+          icon: Icon(Icons.check_circle, color: Colors.black),
+          shouldIconPulse: true,
+          titleText: Text(
+            'Selamat datang!',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          messageText: Text(
+            'Semoga harimu menyenangkan :)',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+      Get.offAllNamed(Routes.BERANDA);
     });
   }
 }

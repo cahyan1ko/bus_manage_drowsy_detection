@@ -5,6 +5,7 @@ import '../controllers/beranda_controller.dart';
 // import 'package:awesome_dialog/awesome_dialog.dart';
 // import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:lottie/lottie.dart';
+import 'package:capstone_bus_manage/app/routes/app_pages.dart';
 
 class BerandaView extends StatefulWidget {
   const BerandaView({super.key});
@@ -71,7 +72,10 @@ class _BerandaViewState extends State<BerandaView> {
                       IconButton(
                         icon: const Icon(Icons.notifications_none,
                             color: Colors.black),
-                        onPressed: () {},
+                        onPressed: () {
+                          print("Pindah ke informasi");
+                          Get.toNamed(Routes.INFORMASI);
+                        },
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
@@ -182,7 +186,7 @@ class _BerandaViewState extends State<BerandaView> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        'Perjalanan akan segera dimulai. Jangan lupa bawa semangat dan hati-hati di jalan!',
+                                        'Perjalanan akan segera dimulai. Tetap semangat dan hati-hati di jalan!',
                                         textAlign: TextAlign.center,
                                       ),
                                       const SizedBox(height: 16),
@@ -203,12 +207,14 @@ class _BerandaViewState extends State<BerandaView> {
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
+                                                side: const BorderSide(
+                                                    color: Color(0xFFE25353)),
                                               ),
                                             ),
                                             child: const Text(
                                               'Nanti',
                                               style: TextStyle(
-                                                  color: Colors.black),
+                                                  color: Color(0xFFE25353)),
                                             ),
                                           ),
                                           const SizedBox(width: 16),

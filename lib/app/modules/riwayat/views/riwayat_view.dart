@@ -34,13 +34,13 @@ class RiwayatView extends GetView<RiwayatController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(40), // Atur tinggi di sini
+        preferredSize: const Size.fromHeight(40), 
         child: Material(
           color: const Color(0xFFf9f9f9),
           elevation: 0,
           child: SafeArea(
             child: SizedBox(
-              height: 40, // Penting: tambahkan height di child juga
+              height: 40, 
               child: Row(
                 children: [
                   Expanded(

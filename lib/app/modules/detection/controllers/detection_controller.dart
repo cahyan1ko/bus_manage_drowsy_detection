@@ -9,6 +9,7 @@ import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class DetectionController extends GetxController {
+  int frameCount = 0;
   late Interpreter interpreter;
   List<String> labels = [];
 
@@ -56,8 +57,23 @@ class DetectionController extends GetxController {
   }
 
   Future<void> startCamera() async {
-    cameras = await availableCameras();
-    await initializeCamera(selectedCameraIndex);
+    try {
+      cameras = await availableCameras();
+
+      final frontCameraIndex = cameras.indexWhere(
+          (camera) => camera.lensDirection == CameraLensDirection.front);
+
+      if (frontCameraIndex == -1) {
+        debugPrint('❌ Kamera depan tidak ditemukan.');
+        return;
+      }
+
+      selectedCameraIndex = frontCameraIndex;
+
+      await initializeCamera(selectedCameraIndex);
+    } catch (e) {
+      debugPrint('❌ Error saat memulai kamera: $e');
+    }
   }
 
   Uint8List convertYUV420toNV21(CameraImage image) {
@@ -70,11 +86,9 @@ class DetectionController extends GetxController {
     final uvSize = width * height ~/ 2;
     final nv21 = Uint8List(ySize + uvSize);
 
-    // Copy Y plane
     final yPlane = image.planes[0].bytes;
     nv21.setRange(0, ySize, yPlane);
 
-    // U and V planes are interleaved in NV21 format as VU VU VU...
     int uvIndex = ySize;
     final uPlane = image.planes[1].bytes;
     final vPlane = image.planes[2].bytes;
@@ -125,7 +139,8 @@ class DetectionController extends GetxController {
   }
 
   void processCameraImage(CameraImage image) async {
-    if (isDetecting) return;
+    frameCount++;
+    if (frameCount % 60 != 0 || isDetecting) return;
     isDetecting = true;
 
     try {
@@ -154,7 +169,6 @@ class DetectionController extends GetxController {
         final face = faces.first;
         final inputSize = 224;
 
-        // Panggil hanya sekali
         final inputFloat32 = cropAndResizeFaceFromCameraImage(
             image, face.boundingBox, inputSize);
 

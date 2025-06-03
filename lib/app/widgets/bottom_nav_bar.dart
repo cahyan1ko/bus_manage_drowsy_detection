@@ -17,16 +17,16 @@ class BottomNavBar extends StatelessWidget {
       height: 80,
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
+          // BoxShadow(
+          //   color: Colors.black.withOpacity(0.2),
+          //   spreadRadius: 0,
+          //   blurRadius: 2,
+          //   offset: const Offset(0, -2),
+          // ),
         ],
       ),
       child: Material(
-        elevation: 8,
+        elevation: 20,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),

@@ -1,5 +1,7 @@
+import 'package:capstone_bus_manage/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../widgets/bottom_nav_bar.dart';
 
@@ -27,8 +29,8 @@ class ProfilView extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () => Get.back(),
-                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {},
+                  icon: const Icon(Icons.help_outline),
                 ),
                 Expanded(
                   child: Text(
@@ -42,10 +44,8 @@ class ProfilView extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    // Aksi saat tombol help ditekan
-                  },
-                  icon: const Icon(Icons.help_outline), // icon help
+                  onPressed: () {},
+                  icon: const Icon(Icons.edit), // icon help
                 ),
               ],
             ),
@@ -77,7 +77,7 @@ class ProfilView extends StatelessWidget {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-                        // Aksi edit foto profil
+                        Get.toNamed(Routes.NOTIFIKASI);
                       },
                       child: Container(
                         width: 35,
@@ -110,23 +110,24 @@ class ProfilView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Tombol edit profil
-              SizedBox(
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigasi ke halaman edit profil (bisa pakai Get.to)
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFE25353),
-                    shape: const StadiumBorder(),
-                    side: BorderSide.none,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 18, // bisa disesuaikan
                   ),
-                  child: const Text(
-                    'Edit Profil',
-                    style: TextStyle(color: Colors.white),
+                  const SizedBox(width: 4),
+                  Text(
+                    "Terverifikasi",
+                    style: const TextStyle(
+                      fontStyle: FontStyle.normal,
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
+                ],
               ),
 
               const SizedBox(height: 30),
@@ -162,30 +163,89 @@ class ProfilView extends StatelessWidget {
                 onPress: () {},
               ),
               ProfileMenuWidget(
-                title: 'Logout',
+                title: 'Keluar',
                 icon: Icons.logout,
                 textColor: Colors.red,
                 endIcon: false,
                 onPress: () {
-                  Get.defaultDialog(
-                    title: "Logout",
-                    content: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text("Apakah kamu yakin ingin keluar?"),
-                    ),
-                    confirm: ElevatedButton(
-                      onPressed: () {
-                        // Logout logic
-                        Get.back();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent),
-                      child: const Text("Ya"),
-                    ),
-                    cancel: OutlinedButton(
-                      onPressed: () => Get.back(),
-                      child: const Text("Tidak"),
-                    ),
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) {
+                      return Dialog(
+                        backgroundColor: const Color(0xFFF4F4F4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Lottie.asset('assets/animations/question.json',
+                                  height: 150),
+                              const SizedBox(height: 16),
+                              const Text(
+                                'Keluar?',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Apakah kamu yakin ingin keluar?',
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: const Color(0xFFF4F4F4),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24, vertical: 12),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        side: const BorderSide(
+                                            color: Color(0xFFE25353)),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Tidak',
+                                      style:
+                                          TextStyle(color: Color(0xFFE25353)),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Get.offAllNamed(Routes.LOGIN);
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: const Color(0xFFE25353),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24, vertical: 12),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Keluar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
