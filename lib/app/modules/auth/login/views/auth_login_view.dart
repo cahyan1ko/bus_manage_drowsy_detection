@@ -84,6 +84,31 @@ class AuthLoginView extends StatelessWidget {
                                 : const Text('Login'),
                           )),
                       const SizedBox(height: 8),
+
+                      ElevatedButton.icon(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : controller.loginWithGoogle,
+                        icon: Image.asset(
+                          'assets/images/google-icon.png', // pastikan file ini ada
+                          height: 20,
+                          width: 20,
+                        ),
+                        label: const Text('Login dengan Google'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black87,
+                          minimumSize: const Size(double.infinity, 50),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          textStyle: const TextStyle(fontSize: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

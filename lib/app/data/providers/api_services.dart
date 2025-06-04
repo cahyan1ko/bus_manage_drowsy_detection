@@ -32,6 +32,32 @@ class ApiServices {
     }
   }
 
+  // google-login
+
+  static Future<UserModel> googleLogin(String idToken) async {
+    final url = Uri.parse('$baseUrl/google-login');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'id_token': idToken,
+      }),
+    );
+
+    print("Google Login Status: ${response.statusCode}");
+    print("Google Login Body: ${response.body}");
+
+    final data = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(data);
+    } else {
+      return UserModel.error(data['message'] ?? 'Login Google gagal');
+    }
+  }
+
   // register
 
   static Future<Map<String, dynamic>> register({

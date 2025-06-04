@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "441252279729",
+    "project_id": "bus-app-fe471",
+    "storage_bucket": "bus-app-fe471.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441252279729:android:90fc3053840d0afe073990",
+        "android_client_info": {
+          "package_name": "com.example.capstone_bus_manage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441252279729-igbo267i75debv0e4ehbk3tj1gjr7dnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.capstone_bus_manage",
+            "certificate_hash": "dd92e85882660866eb551a6a7994bbb1e2e0e37f"
+          }
+        },
+        {
+          "client_id": "441252279729-jcr3nrakpul19jshriq1nmm32jc0m7p4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYnj5HbrLZaP2L6PXYwWNYozS42OacSdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441252279729-jcr3nrakpul19jshriq1nmm32jc0m7p4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
