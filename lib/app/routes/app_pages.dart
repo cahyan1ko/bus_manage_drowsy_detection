@@ -7,6 +7,8 @@ import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
 import '../modules/auth/register/bindings/auth_register_binding.dart';
 import '../modules/auth/register/views/auth_register_view.dart';
+import '../modules/auth/set_password/bindings/auth_set_password_binding.dart';
+import '../modules/auth/set_password/views/auth_set_password_view.dart';
 import '../modules/auth/verify_otp/bindings/auth_verify_otp_binding.dart';
 import '../modules/auth/verify_otp/views/auth_verify_otp_view.dart';
 import '../modules/beranda/bindings/beranda_binding.dart';
@@ -97,6 +99,11 @@ class AppPages {
       name: _Paths.INFORMASI,
       page: () => const InformasiView(),
       binding: InformasiBinding(),
+    ),
+    GetPage(
+      name: _Paths.SET_PASSWORD,
+      page: () => const AuthSetPasswordView(),
+      binding: AuthSetPasswordBinding(),
     ),
   ];
 }

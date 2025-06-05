@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfilController extends GetxController {
   final box = GetStorage();
 
-  // Contoh data profil yang bisa diambil dari local storage atau API
   var nama = ''.obs;
   var email = ''.obs;
   var nomorHp = ''.obs;
   var alamat = ''.obs;
+  var needSetPassword = false.obs;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void onInit() {
@@ -17,18 +19,28 @@ class ProfilController extends GetxController {
   }
 
   void loadUserProfile() {
-    // Ini hanya contoh, kamu bisa ganti dengan panggilan API atau GetStorage
-    nama.value = box.read('nama') ?? 'John Doe';
+    nama.value = box.read('username') ?? 'John Doe';
     email.value = box.read('email') ?? 'john.doe@example.com';
     nomorHp.value = box.read('nomorHp') ?? '081234567890';
     alamat.value = box.read('alamat') ?? 'Jl. Merdeka No. 123, Jakarta';
+
+    final hasPass = box.read('hasPassword');
+    print('DEBUG: hasPassword dari box = $hasPass (${hasPass.runtimeType})');
+
+    needSetPassword.value = hasPass is bool ? !hasPass : true;
+
+    print('DEBUG: needSetPassword = ${needSetPassword.value}');
   }
 
   Future<void> logout() async {
-    // Hapus semua data dari local storage
-    await box.erase();
-
-    // Navigasi ke halaman login
-    Get.offAllNamed('/login');
+    try {
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.signOut();
+      }
+      await box.erase();
+      Get.offAllNamed('/login');
+    } catch (e) {
+      print('Logout error: $e');
+    }
   }
 }

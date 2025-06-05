@@ -16,6 +16,7 @@ abstract class Routes {
   static const VERIFY_OTP = _Paths.VERIFY_OTP;
   static const NOTIFIKASI = _Paths.NOTIFIKASI;
   static const INFORMASI = _Paths.INFORMASI;
+  static const SET_PASSWORD = _Paths.SET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const VERIFY_OTP = '/verify-otp';
   static const NOTIFIKASI = '/notifikasi';
   static const INFORMASI = '/informasi';
+  static const SET_PASSWORD = '/set-password';
 }

@@ -91,15 +91,16 @@ class ProfilView extends GetView<ProfilController> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Obx(() => Text(
-                    controller.nama.value,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    controller.nama.value.toUpperCase(),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold, // bold
+                          letterSpacing: 0,
+                        ),
                   )),
 
+              const SizedBox(height: 10),
               Obx(() => Text(
                     controller.email.value,
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -126,8 +127,93 @@ class ProfilView extends GetView<ProfilController> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              Obx(() {
+                if (!controller.needSetPassword.value)
+                  return const SizedBox.shrink();
 
-              const SizedBox(height: 30),
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFFDADA), Color(0xFFFFF5F5)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.red.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                    border:
+                        Border.all(color: const Color(0xFFE25353), width: 1.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(Icons.lock_outline_rounded,
+                              color: Color(0xFFE25353), size: 28),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Ups! Sandi Belum Dibuat 🔐',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFE25353),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 4),
+                        child: Text(
+                          'Yuk amankan akunmu sekarang! Buat sandi biar makin aman dan nyaman 🚀',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton.icon(
+                          onPressed: () => Get.toNamed(Routes.SET_PASSWORD),
+                          icon: const Icon(Icons.vpn_key,
+                              size: 18, color: Colors.white),
+                          label: const Text(
+                            'Atur Sekarang',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE25353),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            elevation: 3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+
+              // const SizedBox(height: 30),
               const Divider(),
               const SizedBox(height: 10),
 

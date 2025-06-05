@@ -1,5 +1,6 @@
 import 'package:capstone_bus_manage/app/modules/auth/login/controllers/auth_login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -44,7 +45,7 @@ class AuthLoginView extends StatelessWidget {
                         obscureText: true,
                         decoration: _inputDecoration('Password'),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 2),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -56,7 +57,7 @@ class AuthLoginView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 2),
                       Obx(() => ElevatedButton(
                             onPressed: controller.isLoading.value
                                 ? null
@@ -89,10 +90,10 @@ class AuthLoginView extends StatelessWidget {
                         onPressed: controller.isLoading.value
                             ? null
                             : controller.loginWithGoogle,
-                        icon: Image.asset(
-                          'assets/images/google-icon.png', // pastikan file ini ada
-                          height: 20,
-                          width: 20,
+                        icon: SvgPicture.asset(
+                          'assets/icons/google-icon.svg',
+                          height: 28,
+                          width: 28,
                         ),
                         label: const Text('Login dengan Google'),
                         style: ElevatedButton.styleFrom(
@@ -103,7 +104,7 @@ class AuthLoginView extends StatelessWidget {
                           textStyle: const TextStyle(fontSize: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(color: Colors.grey),
+                            side: const BorderSide(color: Color(0xffe25353)),
                           ),
                         ),
                       ),

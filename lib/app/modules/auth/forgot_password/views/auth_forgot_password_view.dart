@@ -116,7 +116,7 @@ class ForgotPasswordView extends GetView<AuthForgotPasswordController> {
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12), // radius lebih besar
+        borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(

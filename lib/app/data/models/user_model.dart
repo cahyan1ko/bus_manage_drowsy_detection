@@ -2,11 +2,13 @@ class UserData {
   final String email;
   final String username;
   final String id;
+  final bool hasPassword;
 
   UserData({
     required this.email,
     required this.username,
     required this.id,
+    this.hasPassword = false,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -14,10 +16,10 @@ class UserData {
       email: json['email'] ?? '',
       username: json['username'] ?? '',
       id: json['id'] ?? '',
+      hasPassword: json['has_password'] ?? false,
     );
   }
 }
-
 
 class UserModel {
   final String token;
