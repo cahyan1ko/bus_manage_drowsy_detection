@@ -1,12 +1,14 @@
+import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../data/providers/api_services.dart';
 import '../../../../../app/routes/app_pages.dart';
 
 class AuthLoginController extends GetxController {
+  // final box = GetStorage();
+
   var username = ''.obs;
   var password = ''.obs;
   var errorMessage = ''.obs;
@@ -26,15 +28,17 @@ class AuthLoginController extends GetxController {
 
     try {
       final user = await ApiServices.login(username.value, password.value);
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-
-      print('Token saved: ${prefs.getString('token')}');
+      StorageHelper.saveUser(
+        token: user.token,
+        email: user.user.email,
+        username: user.user.username,
+        userId: user.user.id,
+        hasPassword: user.user.hasPassword ?? true,
+      );
 
       isLoading.value = false;
 
-      Get.snackbar('Login Berhasil', 'Selamat datang!');
+      Get.snackbar('Login Berhasil', 'Selamat datang ${user.user.username}!');
       Get.offAllNamed(Routes.BERANDA);
     } catch (e) {
       isLoading.value = false;
@@ -58,16 +62,19 @@ class AuthLoginController extends GetxController {
           final user = await ApiServices.googleLogin(idToken);
           isLoading.value = false;
 
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('token', user.token);
-          await prefs.setString('email', user.user.email);
-          await prefs.setString('username', user.user.username);
-          await prefs.setString('user_id', user.user.id);
+          // final prefs = await SharedPreferences.getInstance();
+          // await prefs.setString('token', user.token);
+          // await prefs.setString('email', user.user.email);
+          // await prefs.setString('username', user.user.username);
+          // await prefs.setString('user_id', user.user.id);
 
-          final box = GetStorage();
-          box.write('username', user.user.username);
-          box.write('email', user.user.email);
-          box.write('hasPassword', user.user.hasPassword);
+          StorageHelper.saveUser(
+            token: user.token,
+            email: user.user.email,
+            username: user.user.username,
+            userId: user.user.id,
+            hasPassword: user.user.hasPassword ?? true,
+          );
 
           if (user.user.hasPassword == false) {
             Get.offAllNamed(Routes.BERANDA,

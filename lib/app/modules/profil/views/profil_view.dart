@@ -288,7 +288,6 @@ class ProfilView extends GetView<ProfilController> {
                                   TextButton(
                                     onPressed: () async {
                                       Navigator.of(context).pop();
-                                      await controller.logout();
                                     },
                                     style: TextButton.styleFrom(
                                       backgroundColor: const Color(0xFFF4F4F4),
@@ -308,9 +307,9 @@ class ProfilView extends GetView<ProfilController> {
                                   ),
                                   const SizedBox(width: 16),
                                   TextButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.of(context).pop();
-                                      Get.offAllNamed(Routes.LOGIN);
+                                      await controller.logout(); // Logout dulu
                                     },
                                     style: TextButton.styleFrom(
                                       backgroundColor: const Color(0xFFE25353),

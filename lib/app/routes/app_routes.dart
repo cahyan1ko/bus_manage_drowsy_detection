@@ -17,10 +17,16 @@ abstract class Routes {
   static const NOTIFIKASI = _Paths.NOTIFIKASI;
   static const INFORMASI = _Paths.INFORMASI;
   static const SET_PASSWORD = _Paths.SET_PASSWORD;
+  static const SPLASH = _Paths.SPLASH;
+  static const ONBOARDING = _Paths.ONBOARDING;
+
 }
 
 abstract class _Paths {
   _Paths._();
+  static const SPLASH = '/';
+  static const ONBOARDING = '/onboarding';
+
   static const BERANDA = '/beranda';
   static const LOGIN = '/auth/login';
   static const JADWAL = '/jadwal';

@@ -1,3 +1,5 @@
+import 'package:capstone_bus_manage/app/modules/onboarding/onboarding_view.dart';
+import 'package:capstone_bus_manage/splash_view.dart';
 import 'package:get/get.dart';
 
 import '../../main_page.dart';
@@ -40,6 +42,9 @@ class AppPages {
       name: '/main',
       page: () => MainPage(),
     ),
+    GetPage(name: Routes.SPLASH, page: () => const SplashView()),
+    GetPage(name: Routes.ONBOARDING, page: () => const OnboardingView()),
+
     GetPage(
       name: _Paths.BERANDA,
       page: () => const BerandaView(),

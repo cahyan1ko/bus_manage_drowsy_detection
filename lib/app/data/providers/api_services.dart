@@ -4,8 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 
 class ApiServices {
-  static const String baseUrl =
-      'https://calm-arachnid-curious.ngrok-free.app/api';
+  static const String baseUrl = 'https://busservice-app.vercel.app/api';
 
   static Future<UserModel> login(String email, String password) async {
     final url = Uri.parse('$baseUrl/login');
