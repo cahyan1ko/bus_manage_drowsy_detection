@@ -4,14 +4,19 @@ import 'package:get/get.dart';
 class TipsDetailView extends StatelessWidget {
   const TipsDetailView({super.key});
 
+  static const baseColor = Color(0xFFE25353);
+
   @override
   Widget build(BuildContext context) {
-    // Ambil data dari arguments GetX
     final args = Get.arguments as Map<String, dynamic>?;
 
     if (args == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Tips Detail')),
+        appBar: AppBar(
+          title: const Text('Tips Detail'),
+          backgroundColor: baseColor,
+          elevation: 2,
+        ),
         body: const Center(child: Text('Data tips tidak tersedia')),
       );
     }
@@ -21,28 +26,49 @@ class TipsDetailView extends StatelessWidget {
     final String description = args['description'] ?? 'No Description';
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: baseColor,
+        elevation: 4,
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Icon(icon, size: 100, color: Colors.redAccent),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          elevation: 5,
+          shadowColor: baseColor.withOpacity(0.4),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(icon, size: 100, color: baseColor),
+                const SizedBox(height: 24),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: baseColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.5,
+                    color: Colors.grey[800],
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.justify,
-            ),
-          ],
+          ),
         ),
       ),
     );

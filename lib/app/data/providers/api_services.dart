@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
+import '../models/rute_model.dart';
 
 class ApiServices {
   static const String baseUrl = 'https://busservice-app.vercel.app/api';
@@ -128,6 +129,25 @@ class ApiServices {
         'status': 'error',
         'message': 'Terjadi kesalahan: $e',
       };
+    }
+  }
+
+  static Future<List<RuteModel>> getRuteByUser(String userId, String token) async {
+    final url = Uri.parse('$baseUrl/rute/user/$userId');
+    
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token', // jika API kamu pakai auth
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List data = json.decode(response.body);
+      return data.map((rute) => RuteModel.fromJson(rute)).toList();
+    } else {
+      throw Exception('Gagal memuat data rute');
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import '../controllers/riwayat_controller.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 
@@ -35,13 +36,13 @@ class RiwayatView extends GetView<RiwayatController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(40), 
+        preferredSize: Size.fromHeight(40),
         child: Material(
           color: Color(0xFFf9f9f9),
           elevation: 0,
           child: SafeArea(
             child: SizedBox(
-              height: 40, 
+              height: 40,
               child: Row(
                 children: [
                   Expanded(
@@ -63,7 +64,13 @@ class RiwayatView extends GetView<RiwayatController> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: Lottie.asset(
+              'assets/animations/bus-loading.json',
+              height: 250,
+              fit: BoxFit.cover,
+            ),
+          );
         } else {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

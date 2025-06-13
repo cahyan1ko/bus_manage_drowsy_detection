@@ -1,38 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:lottie/lottie.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../controllers/jadwal_controller.dart';
 
 class JadwalView extends GetView<JadwalController> {
   const JadwalView({super.key});
 
+  String formatTanggal(String tanggal) {
+    try {
+      final DateTime parsedDate = DateTime.parse(tanggal);
+      return DateFormat('d MMMM yyyy', 'id_ID').format(parsedDate);
+    } catch (e) {
+      return tanggal;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final RxInt selectedCardIndex = (-1).obs;
-    int currentIndex = 0;
+    final RxString selectedDate =
+        ''.obs; // Untuk menyimpan tanggal yang dipilih
 
     return Scaffold(
       extendBody: true,
       backgroundColor: const Color(0xfff9f9f9),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(40), // Atur tinggi di sini
-        child: Material(
-          color: Color(0xFFf9f9f9),
-          elevation: 0,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SafeArea(
             child: SizedBox(
-              height: 40, // Penting: tambahkan height di child juga
+              height: 90,
               child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Jadwal',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Jadwal',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -41,362 +50,361 @@ class JadwalView extends GetView<JadwalController> {
           ),
         ),
       ),
-      body: SafeArea(
-        top: false,
-        child: Container(
-          color: const Color(0xfff9f9f9),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 16.0, left: 16.0, right: 16.0),
-                    child: Obx(() => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Maret 2025',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.ruteList.isEmpty) {
+          return const Center(child: Text('Belum ada jadwal'));
+        }
+
+        final today = DateTime.now();
+        final uniqueDates = List.generate(7, (i) {
+          final date = today.add(Duration(days: i));
+          return DateFormat('yyyy-MM-dd').format(date);
+        });
+
+        if (selectedDate.value.isEmpty && uniqueDates.isNotEmpty) {
+          selectedDate.value = uniqueDates.first;
+        }
+
+        final filteredList = controller.ruteList
+            .where((r) => r.tanggal == selectedDate.value)
+            .toList();
+
+        return Column(
+          children: [
+            SizedBox(
+              height: 70,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: uniqueDates.length,
+                itemBuilder: (context, index) {
+                  final date = uniqueDates[index];
+                  final isSelected = selectedDate.value == date;
+
+                  final tanggal = DateTime.parse(date);
+                  final hari = DateFormat('EEEE', 'id_ID').format(tanggal);
+                  final tgl = DateFormat('dd MMM', 'id_ID').format(tanggal);
+
+                  return GestureDetector(
+                    onTap: () => selectedDate.value = date,
+                    child: Container(
+                      width: 80,
+                      margin: const EdgeInsets.only(right: 12, top: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: isSelected ? Color(0xffe25353) : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey.shade300),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            hari,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const SizedBox(height: 8),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: List.generate(10, (index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      selectedCardIndex.value =
-                                          selectedCardIndex.value == index
-                                              ? -1
-                                              : index;
-                                    },
-                                    child: Container(
-                                      width: 82,
-                                      height: 114,
-                                      margin: const EdgeInsets.only(right: 12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        image: const DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/sampletujuan.png'),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            left: 8,
-                                            bottom: 8,
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 6,
-                                                vertical: 2,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                '${index + 1}',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14,
+                          ),
+                          Text(
+                            tgl,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: filteredList.isEmpty
+                  ? SizedBox.expand(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 80),
+                          Lottie.asset(
+                            'assets/animations/nothing.json',
+                            width: 200,
+                            height: 200,
+                            repeat: false,
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Tidak ada jadwal di tanggal ini',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filteredList.length,
+                      itemBuilder: (context, index) {
+                        final rute = filteredList[index];
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          insetPadding:
+                                              const EdgeInsets.all(16),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          child: Container(
+                                            width: 300, // custom lebar
+                                            padding: const EdgeInsets.all(20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons
+                                                            .location_on_outlined,
+                                                        color:
+                                                            Color(0xffe25353)),
+                                                    const SizedBox(width: 8),
+                                                    Expanded(
+                                                      child: Text(
+                                                        '${rute.terminalAwal} → ${rute.terminalTujuan}',
+                                                        style: const TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black87,
+                                                        ),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .visible,
+                                                        softWrap: true,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
+                                                const Divider(height: 24),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons
+                                                            .calendar_today_outlined,
+                                                        size: 18,
+                                                        color: Colors.grey),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                        'Tanggal: ${formatTanggal(rute.tanggal)}'),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons
+                                                            .access_time_outlined,
+                                                        size: 18,
+                                                        color: Colors.grey),
+                                                    const SizedBox(width: 6),
+                                                    Text('Jam: ${rute.jam}'),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons
+                                                            .directions_bus_filled,
+                                                        size: 18,
+                                                        color: Colors.grey),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                        'Bus: ${rute.namaBus}'),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons.badge_outlined,
+                                                        size: 18,
+                                                        color: Colors.grey),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                        'Nopol: ${rute.nopol}'),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons
+                                                            .people_alt_outlined,
+                                                        size: 18,
+                                                        color: Colors.grey),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                        'Penumpang: ${rute.jumlahPenumpang}'),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
-                            const SizedBox(height: 18),
-                            Center(
-                              child: Container(
-                                width: 350,
-                                height: 0.5,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            if (selectedCardIndex.value != -1) ...[
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Detail Keberangkatan',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Card(
-                                color: const Color(0xffffffff),
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Nomor Plat')),
-                                          Text(': AB 1234 CD'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Nomor Bus')),
-                                          Text(': 002'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Status Bus')),
-                                          Text(': Berangkat'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Penumpang Awal')),
-                                          Text(': 30'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Jam Keberangkatan')),
-                                          Text(': 10:30 AM'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Pengemudi')),
-                                          Text(': Budi Santoso'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 140,
-                                              child: Text('Catatan')),
-                                          Expanded(
+                                      const Icon(Icons.location_on_outlined,
+                                          color: Color(0xffe25353)),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Flexible(
                                               child: Text(
-                                                  ': Bus berjalan lancar')),
-                                        ],
+                                                rute.terminalAwal,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 6),
+                                            const Icon(Icons.arrow_forward,
+                                                size: 14,
+                                                color: Colors.black87),
+                                            const SizedBox(width: 6),
+                                            Flexible(
+                                              child: Text(
+                                                rute.terminalTujuan,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              Card(
-                                elevation: 4.0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
+                                const SizedBox(height: 8),
+                                const Divider(thickness: 1, color: Colors.grey),
+                                const SizedBox(height: 8),
+                                Row(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Get.toNamed('/detail-opr');
-                                      },
-                                      child: Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(16.0),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFE25353)
-                                              .withOpacity(0.8),
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                          ),
-                                        ),
-                                        child: const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Tegal - Jakarta',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            Text(
-                                              'klik untuk detail',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      color: const Color(0xFFf9f9f9),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(16.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Terminal',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Estimasi',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Tegal'),
-                                                Text('10:30 AM'),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Pemalang'),
-                                                Text('11:15 AM'),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Pekalongan'),
-                                                Text('12:00 PM'),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Cirebon'),
-                                                Text('1:45 PM'),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Bekasi'),
-                                                Text('4:30 PM'),
-                                              ],
-                                            ),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Jakarta'),
-                                                Text('5:15 PM'),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    const Icon(Icons.calendar_today_outlined,
+                                        size: 18, color: Colors.grey),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Tanggal: ${formatTanggal(rute.tanggal)}',
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ]
-                          ],
-                        )),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.only(bottom: 16),
-      //   child: SizedBox(
-      //     width: 150,
-      //     height: 45,
-      //     child: FloatingActionButton(
-      //       onPressed: () {
-      //         Get.toNamed('/detection');
-      //       },
-      //       backgroundColor: Colors.grey[900],
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.circular(12),
-      //       ),
-      //       child: const Text(
-      //         'Mulai Perjalanan!',
-      //         style: TextStyle(
-      //           color: Colors.white,
-      //           fontSize: 14,
-      //           fontWeight: FontWeight.bold,
-      //         ),
-      //       ),
-      //     ),
-      // ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.access_time_outlined,
+                                        size: 18, color: Colors.grey),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Jam: ${rute.jam}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.directions_bus_filled,
+                                        size: 18, color: Colors.grey),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Bus: ${rute.namaBus}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.badge_outlined,
+                                        size: 18, color: Colors.grey),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Nopol: ${rute.nopol}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.people_alt_outlined,
+                                        size: 18, color: Colors.grey),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Penumpang: ${rute.jumlahPenumpang}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        );
+      }),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
         onTap: (index) {
@@ -418,21 +426,6 @@ class JadwalView extends GetView<JadwalController> {
           }
         },
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: SizedBox(
-      //   height: 70,
-      //   width: 70,
-      //   child: ClipRRect(
-      //     borderRadius: BorderRadius.circular(35),
-      //     child: FloatingDetectionButton(
-      //       isActive: currentIndex == 4,
-      //       onPressed: () {
-      //         controller.currentIndex.value = 4;
-      //         Get.offNamed('/detection');
-      //       },
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

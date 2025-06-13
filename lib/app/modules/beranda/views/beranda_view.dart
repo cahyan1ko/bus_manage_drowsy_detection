@@ -1,3 +1,4 @@
+import 'package:capstone_bus_manage/app/modules/jadwal/controllers/jadwal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../widgets/bottom_nav_bar.dart';
@@ -18,6 +19,7 @@ class _BerandaViewState extends State<BerandaView> {
   int _selectedIndex = 0;
 
   final BerandaController controller = Get.put(BerandaController());
+  final JadwalController controllerJadwal = Get.put(JadwalController());
 
   void _onTabTapped(int index) {
     setState(() {
@@ -111,8 +113,11 @@ class _BerandaViewState extends State<BerandaView> {
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.directions_bus_filled,
-                      color: Colors.red, size: 40),
+                  Icon(
+                    Icons.directions_bus_filled,
+                    color: Color(0xffe25353),
+                    size: 40,
+                  ),
                   SizedBox(width: 16),
                   Expanded(
                     child: Text(
@@ -130,8 +135,9 @@ class _BerandaViewState extends State<BerandaView> {
             ),
             const SizedBox(height: 12),
             Obx(() {
-              final jadwal = controller.jadwalHariIni;
-              if (jadwal.isEmpty) {
+              final rute = controllerJadwal.jadwalHariIni.value;
+
+              if (rute == null) {
                 return const Center(
                   child: Text(
                     'Tidak ada jadwal hari ini',
@@ -142,21 +148,25 @@ class _BerandaViewState extends State<BerandaView> {
                   ),
                 );
               }
+
               return Card(
-                color: const Color(0xFFffffff),
+                color: const Color(0xFFFFFFFF),
                 elevation: 1,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      infoRow("Tujuan", jadwal['tujuan']),
-                      infoRow("Jam Berangkat", jadwal['jam']),
-                      infoRow("Bus", jadwal['bus']),
-                      infoRow("Status", jadwal['status']),
+                      infoRow("Tujuan", "${rute.terminalTujuan}"),
+                      infoRow("Jam Berangkat", rute.jam),
+                      infoRow("Bus", rute.namaBus),
+                      infoRow("Nopol", rute.nopol),
+                      infoRow(
+                          "Jumlah Penumpang", "${rute.jumlahPenumpang} Orang"),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(
                         onPressed: () {
@@ -211,7 +221,8 @@ class _BerandaViewState extends State<BerandaView> {
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 side: const BorderSide(
-                                                    color: Color(0xFFE25353)),
+                                                  color: Color(0xFFE25353),
+                                                ),
                                               ),
                                             ),
                                             child: const Text(
@@ -226,7 +237,9 @@ class _BerandaViewState extends State<BerandaView> {
                                               Navigator.of(context).pop();
                                               Get.toNamed('/detection',
                                                   arguments: {
-                                                    'autoStart': true
+                                                    'autoStart': true,
+                                                    'rute':
+                                                        rute, // kirim data jika perlu
                                                   });
                                             },
                                             style: TextButton.styleFrom(
@@ -269,7 +282,7 @@ class _BerandaViewState extends State<BerandaView> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -282,7 +295,7 @@ class _BerandaViewState extends State<BerandaView> {
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 160,
+              height: 120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -401,13 +414,17 @@ class _BerandaViewState extends State<BerandaView> {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // <-- ganti dari start ke center
               children: [
-                Icon(icon, size: 36, color: Colors.redAccent),
+                Icon(icon,
+                    size: 36, color: const Color(0xFFE25353).withOpacity(0.6)),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment
+                        .center, // tambah ini supaya teks juga center vertikal di kolom
                     children: [
                       Text(title,
                           style: const TextStyle(

@@ -37,7 +37,7 @@ class RiwayatController extends GetxController {
   }
 
   void fetchTripHistory() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(milliseconds: 4750));
     tripHistory.value = [
       Trip(
         dari: "Jakarta",

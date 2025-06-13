@@ -61,7 +61,6 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   void _finishOnboarding() {
-    // Tandai sudah lihat onboarding, misal simpan di storage
     // StorageHelper.setOnboardingSeen();
 
     // Langsung ke halaman login atau beranda kalau sudah login

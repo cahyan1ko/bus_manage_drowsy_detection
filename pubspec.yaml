@@ -12,6 +12,7 @@ dependencies:
     get: ^4.7.2
     http: ^1.4.0
     get_storage: ^2.1.1
+    intl: ^0.20.2
     shared_preferences: ^2.5.3
     cupertino_icons: ^1.0.8
     # giffy_dialog: ^2.3.0

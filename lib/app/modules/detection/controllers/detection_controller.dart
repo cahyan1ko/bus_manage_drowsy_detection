@@ -12,6 +12,7 @@ class DetectionController extends GetxController {
   int frameCount = 0;
   late Interpreter interpreter;
   List<String> labels = [];
+  final jadwal = Rxn<Map<String, dynamic>>();
 
   CameraController? cameraController;
   List<CameraDescription> cameras = [];
@@ -32,6 +33,11 @@ class DetectionController extends GetxController {
   void onInit() {
     super.onInit();
     loadModel();
+    jadwal.value = {
+      'tujuan': 'Jakarta - Bandung',
+      'waktu': '13 Juni 2025, 08:00 WIB',
+      'bus': 'Bus Pariwisata 02',
+    };
   }
 
   @override
