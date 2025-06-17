@@ -36,7 +36,7 @@ class _BerandaViewState extends State<BerandaView> {
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments ?? {};
-    final bool needSetPassword = args['needSetPassword'] == true;
+    // final bool needSetPassword = args['needSetPassword'] == true;
 
     int currentIndex = 0;
     return Scaffold(

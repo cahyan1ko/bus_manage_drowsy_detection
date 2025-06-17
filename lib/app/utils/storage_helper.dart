@@ -10,6 +10,8 @@ class StorageHelper {
   static const _keyUserId = 'user_id';
   static const _keyHasPassword = 'hasPassword';
   static const _keyOnboardingSeen = 'onboarding_seen';
+  static const _keyPhone = 'phone';
+  static const _keyAddress = 'address';
 
   /// Init harus dipanggil sebelum penggunaan StorageHelper
   static Future<void> init() async {
@@ -24,12 +26,16 @@ class StorageHelper {
     required String username,
     required String userId,
     required bool hasPassword,
+    String? phone,
+    String? address,
   }) {
     write(_keyToken, token);
     write(_keyEmail, email);
     write(_keyUsername, username);
     write(_keyUserId, userId);
     write(_keyHasPassword, hasPassword);
+    if (phone != null) write(_keyPhone, phone);
+    if (address != null) write(_keyAddress, address);
   }
 
   /// Write data by key
@@ -60,6 +66,8 @@ class StorageHelper {
   static String? get username => read<String>(_keyUsername);
   static String? get userId => read<String>(_keyUserId);
   static bool get hasPassword => read<bool>(_keyHasPassword) ?? true;
+  static String? get phone => read<String>(_keyPhone);
+  static String? get address => read<String>(_keyAddress);
 
   // Login check
   static bool get isLoggedIn => token != null && token!.isNotEmpty;

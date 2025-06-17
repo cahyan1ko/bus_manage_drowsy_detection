@@ -32,7 +32,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body disini kosong atau bisa diganti sesuai kebutuhan
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,
         onTap: _onTap,

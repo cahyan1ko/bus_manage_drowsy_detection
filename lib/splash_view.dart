@@ -17,7 +17,7 @@ class _SplashViewState extends State<SplashView> {
 
     Future.delayed(const Duration(seconds: 2), () async {
       final seen = await StorageHelper.onboardingSeen;
-      if (seen) {
+      if (!seen) {
         Get.offAllNamed(Routes.ONBOARDING);
       } else {
         if (StorageHelper.isLoggedIn) {

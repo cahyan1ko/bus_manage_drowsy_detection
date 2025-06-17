@@ -58,6 +58,59 @@ class ApiServices {
     }
   }
 
+  // save device
+
+  static Future<void> sendDeviceInfo({
+    required String userId,
+    required String deviceName,
+    required String deviceOS,
+    required String deviceId,
+  }) async {
+    final url = Uri.parse('$baseUrl/device-history');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'user_id': userId,
+          'device_name': deviceName,
+          'device_os': deviceOS,
+          'device_id': deviceId,
+        }),
+      );
+
+      print('Device Info Response: ${response.statusCode}');
+      print('Device Info Body: ${response.body}');
+
+      if (response.statusCode != 201 && response.statusCode != 200) {
+        throw Exception('Gagal mengirim data perangkat');
+      }
+    } catch (e) {
+      print('Error sending device info: $e');
+    }
+  }
+
+  // get device
+
+  static Future<List<Map<String, dynamic>>> getDeviceHistory(
+      String userId) async {
+    final url = Uri.parse('$baseUrl/device-history/$userId');
+
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      final List data = json.decode(response.body);
+      return data.cast<Map<String, dynamic>>();
+    } else {
+      throw Exception('Gagal mengambil riwayat perangkat');
+    }
+  }
+
   // register
 
   static Future<Map<String, dynamic>> register({
@@ -132,9 +185,10 @@ class ApiServices {
     }
   }
 
-  static Future<List<RuteModel>> getRuteByUser(String userId, String token) async {
+  static Future<List<RuteModel>> getRuteByUser(
+      String userId, String token) async {
     final url = Uri.parse('$baseUrl/rute/user/$userId');
-    
+
     final response = await http.get(
       url,
       headers: {

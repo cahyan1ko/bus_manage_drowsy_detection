@@ -19,7 +19,8 @@ abstract class Routes {
   static const SET_PASSWORD = _Paths.SET_PASSWORD;
   static const SPLASH = _Paths.SPLASH;
   static const ONBOARDING = _Paths.ONBOARDING;
-
+  static const SETTINGS_HISTORY = _Paths.SETTINGS_HISTORY;
+  static const SETTINGS_HISTORY_DEVICES = _Paths.SETTINGS_HISTORY_DEVICES;
 }
 
 abstract class _Paths {
@@ -41,4 +42,6 @@ abstract class _Paths {
   static const NOTIFIKASI = '/notifikasi';
   static const INFORMASI = '/informasi';
   static const SET_PASSWORD = '/set-password';
+  static const SETTINGS_HISTORY = '/settings/history';
+  static const SETTINGS_HISTORY_DEVICES = '/settings/history/devices';
 }

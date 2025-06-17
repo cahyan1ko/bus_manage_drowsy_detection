@@ -1,3 +1,4 @@
+import 'package:capstone_bus_manage/app/utils/device_helper.dart';
 import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
@@ -34,6 +35,22 @@ class AuthLoginController extends GetxController {
         username: user.user.username,
         userId: user.user.id,
         hasPassword: user.user.hasPassword ?? true,
+      );
+      print("RESPONS API LOGIN: ${user.user.username}, ${user.user.email}");
+
+      final deviceInfo = await DeviceHelper.getDeviceInfo();
+      final userId = await StorageHelper.userId;
+
+      if (userId == null) {
+        print('User ID tidak ditemukan di local storage.');
+        return;
+      }
+
+      await ApiServices.sendDeviceInfo(
+        userId: userId,
+        deviceName: deviceInfo['device_name'] ?? '',
+        deviceOS: deviceInfo['device_os'] ?? '',
+        deviceId: deviceInfo['device_id'] ?? '',
       );
 
       isLoading.value = false;
@@ -74,6 +91,21 @@ class AuthLoginController extends GetxController {
             username: user.user.username,
             userId: user.user.id,
             hasPassword: user.user.hasPassword ?? true,
+          );
+
+          final deviceInfo = await DeviceHelper.getDeviceInfo();
+          final userId = await StorageHelper.userId;
+
+          if (userId == null) {
+            print('User ID tidak ditemukan di local storage.');
+            return;
+          }
+
+          await ApiServices.sendDeviceInfo(
+            userId: userId,
+            deviceName: deviceInfo['device_name'] ?? '',
+            deviceOS: deviceInfo['device_os'] ?? '',
+            deviceId: deviceInfo['device_id'] ?? '',
           );
 
           if (user.user.hasPassword == false) {

@@ -22,12 +22,11 @@ class ProfilController extends GetxController {
   void loadUserProfile() {
     nama.value = StorageHelper.username ?? 'John Doe';
     email.value = StorageHelper.email ?? 'john.doe@example.com';
-    nomorHp.value = '081234567890'; // hardcoded sementara
-    alamat.value = 'Jl. Merdeka No. 123, Jakarta'; // hardcoded sementara
+    nomorHp.value = StorageHelper.phone ?? 'Belum diisi';
+    alamat.value = StorageHelper.address ?? 'Belum diisi';
 
     print('DEBUG: hasPassword = ${StorageHelper.hasPassword}');
     needSetPassword.value = !StorageHelper.hasPassword;
-
     print('DEBUG: needSetPassword = ${needSetPassword.value}');
   }
 
@@ -41,7 +40,7 @@ class ProfilController extends GetxController {
       print('DEBUG: sebelum StorageHelper.clear()');
       await StorageHelper.clear();
       print('DEBUG: setelah StorageHelper.clear()');
-      Get.offAllNamed(Routes.LOGIN); 
+      Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
       print('Logout error: $e');
       Get.snackbar('Logout Gagal', 'Terjadi kesalahan saat logout.');

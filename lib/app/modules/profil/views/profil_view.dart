@@ -1,4 +1,5 @@
 import 'package:capstone_bus_manage/app/routes/app_pages.dart';
+import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -235,11 +236,16 @@ class ProfilView extends GetView<ProfilController> {
               const Divider(),
               const SizedBox(height: 10),
 
-              // Menu lain (contoh)
               ProfileMenuWidget(
                 title: 'Pengaturan',
                 icon: Icons.settings,
-                onPress: () {},
+                onPress: () {
+                  final token =
+                      StorageHelper.token; // pastikan kamu punya getter ini
+                  print(
+                      "DEBUG: token before going to /settings/history = $token");
+                  Get.toNamed(Routes.SETTINGS_HISTORY);
+                },
               ),
               ProfileMenuWidget(
                 title: 'Informasi',

@@ -1,8 +1,7 @@
-import 'package:capstone_bus_manage/app/modules/onboarding/onboarding_view.dart';
-import 'package:capstone_bus_manage/splash_view.dart';
 import 'package:get/get.dart';
 
 import '../../main_page.dart';
+import '../../splash_view.dart';
 import '../modules/auth/forgot_password/bindings/auth_forgot_password_binding.dart';
 import '../modules/auth/forgot_password/views/auth_forgot_password_view.dart';
 import '../modules/auth/login/bindings/auth_login_binding.dart';
@@ -23,10 +22,15 @@ import '../modules/jadwal/bindings/jadwal_binding.dart';
 import '../modules/jadwal/views/jadwal_view.dart';
 import '../modules/notifikasi/bindings/notifikasi_binding.dart';
 import '../modules/notifikasi/views/notifikasi_view.dart';
+import '../modules/onboarding/onboarding_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
 import '../modules/riwayat/views/riwayat_view.dart';
+import '../modules/settings/history/bindings/setting_history_binding.dart';
+import '../modules/settings/history/devices/bindings/settings_history_devices_binding.dart';
+import '../modules/settings/history/devices/views/settings_history_devices_view.dart';
+import '../modules/settings/history/views/setting_history_view.dart';
 import '../modules/tips_detail/bindings/tips_detail_binding.dart';
 import '../modules/tips_detail/views/tips_detail_view.dart';
 
@@ -44,7 +48,6 @@ class AppPages {
     ),
     GetPage(name: Routes.SPLASH, page: () => const SplashView()),
     GetPage(name: Routes.ONBOARDING, page: () => const OnboardingView()),
-
     GetPage(
       name: _Paths.BERANDA,
       page: () => const BerandaView(),
@@ -109,6 +112,16 @@ class AppPages {
       name: _Paths.SET_PASSWORD,
       page: () => const AuthSetPasswordView(),
       binding: AuthSetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS_HISTORY,
+      page: () => const SettingHistoryView(),
+      binding: SettingHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS_HISTORY_DEVICES,
+      page: () => const SettingsHistoryDevicesView(),
+      binding: SettingsHistoryDevicesBinding(),
     ),
   ];
 }
