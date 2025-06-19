@@ -149,8 +149,11 @@ class DetectionController extends GetxController {
     if (frameCount % 60 != 0 || isDetecting) return;
     isDetecting = true;
 
+    print("🟡 [Frame $frameCount] Mulai proses frame");
+
     try {
       final bytes = convertYUV420toNV21(image);
+      print("✅ Konversi YUV420 ke NV21 berhasil");
 
       final rotation = InputImageRotationValue.fromRawValue(
               cameraController!.description.sensorOrientation) ??
@@ -169,27 +172,33 @@ class DetectionController extends GetxController {
         ),
       );
 
+      print(
+          "📷 Metadata image: ${image.width}x${image.height}, Rotation: $rotation");
+
       final faces = await faceDetector.processImage(inputImage);
+      print("🔍 Jumlah wajah terdeteksi: ${faces.length}");
 
       if (faces.isNotEmpty) {
         final face = faces.first;
-        const inputSize = 224;
+        print("🎯 BoundingBox wajah: ${face.boundingBox}");
 
+        const inputSize = 224;
         final inputFloat32 = cropAndResizeFaceFromCameraImage(
             image, face.boundingBox, inputSize);
 
-        // Input harus 4D: [1, inputSize, inputSize, 1]
         var input = inputFloat32.reshape([1, inputSize, inputSize, 3]);
-
         var output = List.generate(1, (_) => List.filled(1, 0.0));
 
+        print("🧠 Memulai prediksi TFLite...");
         interpreter.run(input, output);
 
         double score = output[0][0];
+        final label = score > 0.5 ? labels[1] : labels[0];
 
-        predictedLabel.value = score > 0.5 ? labels[1] : labels[0];
-        print("⚙️ Score: $score => ${predictedLabel.value}");
+        predictedLabel.value = label;
+        print("⚙️ Score: $score => Prediksi: $label");
       } else {
+        print("🚫 Tidak ada wajah terdeteksi pada frame ini.");
         predictedLabel.value = 'unknown';
       }
     } catch (e) {
@@ -197,6 +206,7 @@ class DetectionController extends GetxController {
       predictedLabel.value = 'unknown';
     } finally {
       isDetecting = false;
+      print("🔚 Frame selesai diproses.\n");
     }
   }
 

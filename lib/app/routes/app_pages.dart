@@ -31,6 +31,8 @@ import '../modules/settings/history/bindings/setting_history_binding.dart';
 import '../modules/settings/history/devices/bindings/settings_history_devices_binding.dart';
 import '../modules/settings/history/devices/views/settings_history_devices_view.dart';
 import '../modules/settings/history/views/setting_history_view.dart';
+import '../modules/streamlit_webview/bindings/streamlit_webview_binding.dart';
+import '../modules/streamlit_webview/views/streamlit_webview_view.dart';
 import '../modules/tips_detail/bindings/tips_detail_binding.dart';
 import '../modules/tips_detail/views/tips_detail_view.dart';
 
@@ -122,6 +124,11 @@ class AppPages {
       name: _Paths.SETTINGS_HISTORY_DEVICES,
       page: () => const SettingsHistoryDevicesView(),
       binding: SettingsHistoryDevicesBinding(),
+    ),
+    GetPage(
+      name: _Paths.STREAMLIT_WEBVIEW,
+      page: () => const StreamlitWebviewView(),
+      binding: StreamlitWebviewBinding(),
     ),
   ];
 }

@@ -29,15 +29,15 @@ class ForgotPasswordView extends GetView<AuthForgotPasswordController> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Center(
-                        child: Image.asset('assets/images/logo-busty.png',
-                            width: 100),
+                        child: Image.asset('assets/images/travion_pt.png',
+                            width: 80),
                       ),
                       const SizedBox(height: 24),
                       const Text(
                         'Reset Password',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                            fontSize: 22, fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 12),
                       const Text(

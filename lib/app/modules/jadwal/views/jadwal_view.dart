@@ -55,9 +55,9 @@ class JadwalView extends GetView<JadwalController> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (controller.ruteList.isEmpty) {
-          return const Center(child: Text('Belum ada jadwal'));
-        }
+        // if (controller.ruteList.isEmpty) {
+        //   return const Center(child: Text('Belum ada jadwal'));
+        // }
 
         final today = DateTime.now();
         final uniqueDates = List.generate(7, (i) {

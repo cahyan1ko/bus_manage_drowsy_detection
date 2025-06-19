@@ -29,6 +29,9 @@ dependencies:
     device_info_plus: ^10.0.1
     package_info_plus: ^4.2.0
     uuid: ^4.3.1
+    # webview
+    webview_flutter: ^4.10.0
+    webview_flutter_android: ^4.3.2
 
 dev_dependencies:
     flutter_test:
@@ -39,7 +42,7 @@ dev_dependencies:
 flutter_icons:
     android: true
     ios: true
-    image_path: "assets/icons/apk-icon.png"
+    image_path: "assets/icons/travion_logo.png"
 
 flutter:
     uses-material-design: true

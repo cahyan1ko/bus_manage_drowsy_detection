@@ -25,12 +25,12 @@ class AuthLoginView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset('assets/images/logo-busty.png', width: 100),
+                      Image.asset('assets/images/travion_pt.png', width: 80),
                       const SizedBox(height: 16),
                       const Text(
                         'Please login to continue',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16, fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 20),
                       // Image.asset('assets/images/bro.png', width: 200),

@@ -163,17 +163,17 @@ class _CameraSection extends StatelessWidget {
                     color: Colors.black.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Text(
-                    controller.predictedLabel.value != 'unknown'
-                        ? 'Terdeteksi: ${controller.predictedLabel.value}'
-                        : 'Mendeteksi wajah...',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  child: Obx(() => Text(
+                        controller.predictedLabel.value != 'unknown'
+                            ? 'Terdeteksi: ${controller.predictedLabel.value}'
+                            : 'Mendeteksi wajah...',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
                 ),
               ),
             ],

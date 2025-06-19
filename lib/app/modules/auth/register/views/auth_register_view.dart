@@ -25,11 +25,11 @@ class _AuthRegisterViewState extends State<AuthRegisterView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/images/logo-busty.png', width: 100),
+                Image.asset('assets/images/travion_pt.png', width: 80),
                 const SizedBox(height: 16),
                 const Text(
                   'Create your account',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(height: 16),
                 if (errorMessage.isNotEmpty)

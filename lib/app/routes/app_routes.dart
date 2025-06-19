@@ -21,6 +21,7 @@ abstract class Routes {
   static const ONBOARDING = _Paths.ONBOARDING;
   static const SETTINGS_HISTORY = _Paths.SETTINGS_HISTORY;
   static const SETTINGS_HISTORY_DEVICES = _Paths.SETTINGS_HISTORY_DEVICES;
+  static const STREAMLIT_WEBVIEW = _Paths.STREAMLIT_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -44,4 +45,5 @@ abstract class _Paths {
   static const SET_PASSWORD = '/set-password';
   static const SETTINGS_HISTORY = '/settings/history';
   static const SETTINGS_HISTORY_DEVICES = '/settings/history/devices';
+  static const STREAMLIT_WEBVIEW = '/streamlit-webview';
 }

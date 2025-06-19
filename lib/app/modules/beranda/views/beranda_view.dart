@@ -1,5 +1,6 @@
 import 'package:capstone_bus_manage/app/modules/jadwal/controllers/jadwal_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../controllers/beranda_controller.dart';
@@ -64,13 +65,9 @@ class _BerandaViewState extends State<BerandaView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Hey, Jane!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20,
-                    ),
+                  SvgPicture.asset(
+                    'assets/images/travion_ls.svg',
+                    height: 24,
                   ),
                   Row(
                     children: [
@@ -79,7 +76,7 @@ class _BerandaViewState extends State<BerandaView> {
                             color: Colors.black),
                         onPressed: () {
                           print("Pindah ke informasi");
-                          Get.toNamed(Routes.INFORMASI);
+                          Get.toNamed(Routes.STREAMLIT_WEBVIEW);
                         },
                       ),
                       const SizedBox(width: 8),
