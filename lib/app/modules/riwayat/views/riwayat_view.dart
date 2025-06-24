@@ -11,21 +11,25 @@ class RiwayatView extends GetView<RiwayatController> {
 
   Color getStatusColor(String status) {
     switch (status) {
-      case "Selesai":
+      case 'finish':
         return Colors.green;
-      case "Dalam Perjalanan":
+      case 'ongoing':
         return Colors.orange;
-      default:
+      case 'off':
         return Colors.grey;
+      default:
+        return Colors.black;
     }
   }
 
   Icon getStatusIcon(String status) {
-    switch (status) {
-      case "Selesai":
+    switch (status.toLowerCase()) {
+      case "finish":
         return const Icon(Icons.check_circle, color: Colors.green);
-      case "Dalam Perjalanan":
-        return const Icon(Icons.directions_car, color: Colors.orange);
+      case "ongoing":
+        return const Icon(Icons.directions_bus, color: Colors.orange);
+      case "off":
+        return const Icon(Icons.power_settings_new, color: Colors.red);
       default:
         return const Icon(Icons.info_outline, color: Colors.grey);
     }
@@ -101,10 +105,10 @@ class RiwayatView extends GetView<RiwayatController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        buildStatItem("Total", controller.total),
-                        buildStatItem("Selesai", controller.selesai),
-                        buildStatItem(
-                            "Dalam Perjalanan", controller.dalamPerjalanan),
+                        buildStatItem("Total Perjalanan",
+                            controller.totalPerjalanan.toString()),
+                        buildStatItem("Persentase Mengantuk",
+                            "${controller.persentaseMengantukAllValue}%")
                       ],
                     ),
                   ],
@@ -117,7 +121,7 @@ class RiwayatView extends GetView<RiwayatController> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Row(
                   children: [
-                    const Text("Filter Status: ",
+                    const Text("Urutkan: ",
                         style: TextStyle(fontWeight: FontWeight.w500)),
                     const SizedBox(width: 10),
                     Expanded(
@@ -130,16 +134,16 @@ class RiwayatView extends GetView<RiwayatController> {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                value: controller.selectedStatus.value,
-                                items: ['Semua', 'Selesai', 'Dalam Perjalanan']
-                                    .map((status) => DropdownMenuItem(
-                                          value: status,
-                                          child: Text(status),
+                                value: controller.selectedOrder.value,
+                                items: ['Terbaru', 'Terlama']
+                                    .map((order) => DropdownMenuItem(
+                                          value: order,
+                                          child: Text(order),
                                         ))
                                     .toList(),
                                 onChanged: (value) {
                                   if (value != null) {
-                                    controller.selectedStatus.value = value;
+                                    controller.selectedOrder.value = value;
                                   }
                                 },
                               ),
@@ -149,6 +153,7 @@ class RiwayatView extends GetView<RiwayatController> {
                   ],
                 ),
               ),
+
               const SizedBox(height: 8),
 
               // List Perjalanan
@@ -190,7 +195,7 @@ class RiwayatView extends GetView<RiwayatController> {
                                 ),
                                 subtitle: Text(trip.tanggal),
                                 trailing: Text(
-                                  trip.status,
+                                  trip.statusLabel,
                                   style: TextStyle(
                                     color: getStatusColor(trip.status),
                                     fontWeight: FontWeight.bold,
@@ -216,23 +221,28 @@ class RiwayatView extends GetView<RiwayatController> {
                                       infoRow(Icons.calendar_today,
                                           "Tanggal: ${trip.tanggal}"),
                                       const SizedBox(height: 6),
-                                      infoRow(Icons.person,
-                                          "Nama Supir: ${trip.namaSupir}"),
-                                      const SizedBox(height: 6),
                                       infoRow(Icons.directions_bus,
-                                          "Armada: ${trip.armada}"),
+                                          "Armada: ${trip.namaBus}"),
                                       const SizedBox(height: 6),
-                                      infoRow(Icons.location_on,
-                                          "Rute: ${trip.route}"),
+                                      infoRow(Icons.confirmation_number,
+                                          "Nopol: ${trip.nopol}"),
+                                      const SizedBox(height: 6),
+                                      infoRow(Icons.people,
+                                          "Jumlah Penumpang: ${trip.jumlahPenumpang}"),
                                       const SizedBox(height: 6),
                                       infoRow(
-                                        Icons.access_time,
-                                        "Kedatangan: ${trip.kedatangan ?? 'Belum tiba'}",
+                                        Icons.access_time_filled,
+                                        "Kedatangan: ${trip.kedatangan.isEmpty ? 'Belum tiba' : trip.kedatanganFormatted}",
                                       ),
                                       const SizedBox(height: 6),
                                       infoRow(
-                                        Icons.people,
-                                        "Jumlah Penumpang Awal: ${trip.jumlahPenumpangAwal?.toString() ?? '-'}",
+                                        Icons.remove_red_eye,
+                                        "Jumlah Deteksi Mengantuk: ${trip.deteksi.length}",
+                                      ),
+                                      const SizedBox(height: 6),
+                                      infoRow(
+                                        Icons.bedtime,
+                                        "Persentase Mengantuk: ${trip.persentaseMengantuk}",
                                       ),
                                     ],
                                   ),
@@ -281,12 +291,12 @@ class RiwayatView extends GetView<RiwayatController> {
     );
   }
 
-  Widget buildStatItem(String label, int value) {
+  Widget buildStatItem(String label, String value) {
     return Column(
       children: [
         Text(label, style: const TextStyle(color: Colors.grey)),
         const SizedBox(height: 4),
-        Text("$value",
+        Text(value,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
       ],
     );

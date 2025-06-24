@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+
 import '../../routes/app_pages.dart';
 import '../../utils/storage_helper.dart';
 
@@ -16,39 +18,52 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   final List<Widget> _pages = [
     _buildPage(
-      title: "Welcome",
-      description: "This is the first onboarding screen",
-      imagePath: "assets/images/onboarding1.png",
+      title: "Selamat Datang di Travion",
+      description:
+          "Travion adalah solusi cerdas untuk manajemen operasional bus dengan pemantauan perjalanan secara real-time.",
+      lottiePath: "assets/animations/onboarding1.json",
     ),
     _buildPage(
-      title: "Explore",
-      description: "Here you can explore the features",
-      imagePath: "assets/images/onboarding2.png",
+      title: "Deteksi Kantuk Supir",
+      description:
+          "Fitur deteksi mengantuk membantu meningkatkan keselamatan perjalanan dengan memantau kondisi pengemudi.",
+      lottiePath: "assets/animations/onboarding2.json",
     ),
     _buildPage(
-      title: "Get Started",
-      description: "Let's get started!",
-      imagePath: "assets/images/onboarding3.png",
+      title: "Gabung Bersama Kami",
+      description:
+          "Mulai pengalaman baru dalam pengelolaan transportasi yang aman, cerdas, dan efisien bersama Travion.",
+      lottiePath: "assets/animations/onboarding3.json",
     ),
   ];
 
-  static Widget _buildPage(
-      {required String title,
-      required String description,
-      required String imagePath}) {
+  static Widget _buildPage({
+    required String title,
+    required String description,
+    required String lottiePath,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(imagePath, width: 250),
+        Lottie.asset(
+          lottiePath,
+          width: 300,
+          repeat: true,
+        ),
         const SizedBox(height: 30),
-        Text(title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(description,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16)),
+          child: Text(
+            description,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
       ],
     );
@@ -60,10 +75,8 @@ class _OnboardingViewState extends State<OnboardingView> {
     super.dispose();
   }
 
-  void _finishOnboarding() {
-    // StorageHelper.setOnboardingSeen();
-
-    // Langsung ke halaman login atau beranda kalau sudah login
+  void _finishOnboarding() async {
+    // await StorageHelper.setOnboardingSeen();
     if (StorageHelper.isLoggedIn) {
       Get.offAllNamed(Routes.BERANDA);
     } else {
@@ -74,6 +87,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffffffff),
       body: SafeArea(
         child: Column(
           children: [
@@ -88,7 +102,6 @@ class _OnboardingViewState extends State<OnboardingView> {
                 children: _pages,
               ),
             ),
-            // indikator titik
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
@@ -100,15 +113,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                   height: 8,
                   decoration: BoxDecoration(
                     color:
-                        _currentPage == index ? Colors.redAccent : Colors.grey,
+                        _currentPage == index ? Color(0xffe25353) : Colors.grey,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 24),
-
-            // tombol next / selesai
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               child: SizedBox(
@@ -125,14 +136,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Color(0xffe25353),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   child: Text(
                     _currentPage == _pages.length - 1 ? 'Selesai' : 'Lanjut',
-                    style: const TextStyle(fontSize: 18),
+                    style:
+                        const TextStyle(fontSize: 18, color: Color(0xffffffff)),
                   ),
                 ),
               ),

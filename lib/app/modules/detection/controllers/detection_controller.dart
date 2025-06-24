@@ -1,18 +1,47 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:camera/camera.dart';
+import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:capstone_bus_manage/app/data/providers/api_services.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DetectionController extends GetxController {
   int frameCount = 0;
   late Interpreter interpreter;
   List<String> labels = [];
   final jadwal = Rxn<Map<String, dynamic>>();
+
+  Future<Position> getCurrentPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
 
   CameraController? cameraController;
   List<CameraDescription> cameras = [];
@@ -111,6 +140,15 @@ class DetectionController extends GetxController {
   }
 
   Future<void> stopCamera() async {
+    final userId = StorageHelper.userId ?? "";
+
+    final success = await ApiServices.stopTracking(userId: userId);
+
+    if (success) {
+      print("✅ Tracking dihentikan.");
+    } else {
+      print("❌ Gagal menghentikan tracking.");
+    }
     await cameraController?.stopImageStream();
     await cameraController?.dispose();
     cameraController = null;
@@ -196,6 +234,26 @@ class DetectionController extends GetxController {
         final label = score > 0.5 ? labels[1] : labels[0];
 
         predictedLabel.value = label;
+        try {
+          final position = await getCurrentPosition();
+          double currentLat = position.latitude;
+          double currentLng = position.longitude;
+
+          print("📍 Lokasi saat ini:");
+          print("   Latitude: $currentLat");
+          print("   Longitude: $currentLng");
+
+          print("🚀 Mengirim data ke API tracking...");
+          await ApiServices.sendTrackingData(
+            userId: StorageHelper.userId!,
+            lat: currentLat,
+            lng: currentLng,
+            labelDetection: label,
+          );
+        } catch (e) {
+          print("❌ Gagal ambil lokasi: $e");
+        }
+
         print("⚙️ Score: $score => Prediksi: $label");
       } else {
         print("🚫 Tidak ada wajah terdeteksi pada frame ini.");

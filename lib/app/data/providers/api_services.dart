@@ -193,7 +193,7 @@ class ApiServices {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token', // jika API kamu pakai auth
+        'Authorization': 'Bearer $token',
       },
     );
 
@@ -202,6 +202,115 @@ class ApiServices {
       return data.map((rute) => RuteModel.fromJson(rute)).toList();
     } else {
       throw Exception('Gagal memuat data rute');
+    }
+  }
+
+  static Future<bool> sendTrackingData({
+    required String userId,
+    required double lat,
+    required double lng,
+    required String labelDetection,
+  }) async {
+    final url = Uri.parse('$baseUrl/tracking');
+
+    final body = {
+      "user_id": userId,
+      "lat": lat,
+      "lng": lng,
+      "label_detection": labelDetection,
+    };
+
+    print("📦 Payload:");
+    print(jsonEncode(body));
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      print("📡 Status Code: ${response.statusCode}");
+      print("📝 Response Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        print("✅ Tracking data sent successfully.");
+        return true;
+      } else {
+        print("⚠️ Failed to send tracking data: ${response.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Error sending tracking data: $e");
+      return false;
+    }
+  }
+
+  static Future<bool> stopTracking({required String userId}) async {
+    final url = Uri.parse('$baseUrl/stop-tracking');
+
+    final body = {
+      "user_id": userId,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        print("✅ Tracking berhasil dihentikan.");
+        return true;
+      } else {
+        print("⚠️ Gagal menghentikan tracking: ${response.statusCode}");
+        print("Body: ${response.body}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Error saat mengirim permintaan stopTracking: $e");
+      return false;
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getRiwayatOperasional({
+    required String userId,
+  }) async {
+    final url = Uri.parse('$baseUrl/riwayat-operasional');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'user_id': userId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> riwayatList = data['data'];
+
+        print(
+            "✅ Riwayat operasional berhasil diambil: ${riwayatList.length} data");
+
+        // Convert to List<Map<String, dynamic>> for better handling
+        return riwayatList.cast<Map<String, dynamic>>();
+      } else {
+        print("⚠️ Gagal mengambil riwayat: ${response.statusCode}");
+        print(response.body);
+        return [];
+      }
+    } catch (e) {
+      print("❌ Error saat mengambil riwayat: $e");
+      return [];
     }
   }
 }

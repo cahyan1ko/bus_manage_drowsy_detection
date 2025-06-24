@@ -1,25 +1,114 @@
+import 'package:capstone_bus_manage/app/data/providers/api_services.dart';
+import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+class Deteksi {
+  final String label;
+  final String timestamp;
+
+  Deteksi({
+    required this.label,
+    required this.timestamp,
+  });
+
+  factory Deteksi.fromJson(Map<String, dynamic> json) {
+    return Deteksi(
+      label: json['label_detection'] ?? '',
+      timestamp: json['timestamp'] ?? '',
+    );
+  }
+}
 
 class Trip {
+  final String ruteOperasionalId;
   final String dari;
   final String tujuan;
   final String tanggal;
-  final String namaSupir;
-  final String armada;
-  final String? kedatangan; // nullable
-  final int? jumlahPenumpangAwal; // nullable
+  final String namaBus;
+  final String nopol;
+  final int jumlahPenumpang;
+  final String kedatangan;
+  final List<Deteksi> deteksi;
   final String status;
 
   Trip({
+    required this.ruteOperasionalId,
     required this.dari,
     required this.tujuan,
     required this.tanggal,
-    required this.namaSupir,
-    required this.armada,
-    this.kedatangan,
-    this.jumlahPenumpangAwal,
+    required this.namaBus,
+    required this.nopol,
+    required this.jumlahPenumpang,
+    required this.kedatangan,
+    required this.deteksi,
     required this.status,
   });
+
+  factory Trip.fromMap(Map<String, dynamic> json) {
+    final List<dynamic> deteksiList = json['deteksi'] ?? [];
+    return Trip(
+      ruteOperasionalId: json['rute_operasional_id'] ?? '',
+      dari: json['terminal_awal'] ?? '',
+      tujuan: json['terminal_tujuan'] ?? '',
+      tanggal: json['tanggal'] ?? '',
+      namaBus: json['nama_bus'] ?? '',
+      nopol: json['nopol'] ?? '',
+      jumlahPenumpang: json['jumlah_penumpang'] is int
+          ? json['jumlah_penumpang']
+          : int.tryParse(json['jumlah_penumpang']?.toString() ?? '0') ?? 0,
+      kedatangan: json['kedatangan'] ?? '',
+      deteksi: deteksiList.map((d) => Deteksi.fromJson(d)).toList(),
+      status: (json['status'] ?? 'off').toString().toLowerCase(),
+    );
+  }
+  String get kedatanganFormatted {
+    if (kedatangan.isEmpty) return "Belum tiba";
+
+    try {
+      final parsed = DateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", 'en_US')
+          .parseUTC(kedatangan)
+          .toLocal();
+
+      return DateFormat("EEEE, dd MMM yyyy, HH:mm", "id_ID").format(parsed);
+    } catch (e) {
+      return kedatangan;
+    }
+  }
+
+  String get persentaseMengantuk {
+    if (deteksi.isEmpty) return '0%';
+
+    final total = deteksi.length;
+    final jumlahDrowsy =
+        deteksi.where((d) => d.label.toLowerCase() == 'drowsy').length;
+
+    final persen = (jumlahDrowsy / total * 100).round();
+
+    return '$persen%';
+  }
+
+  DateTime get tanggalDateTime {
+    try {
+      return DateFormat("yyyy-MM-dd")
+          .parse(tanggal); // sesuaikan format tanggal
+    } catch (e) {
+      return DateTime(2000); // fallback
+    }
+  }
+
+  String get statusLabel {
+    switch (status) {
+      case 'off':
+        return 'Belum Berangkat';
+      case 'ongoing':
+        return 'Dalam Perjalanan';
+      case 'finish':
+        return 'Selesai';
+      default:
+        return 'Tidak Diketahui';
+    }
+  }
 
   String get route => "$dari - $tujuan";
 }
@@ -27,156 +116,59 @@ class Trip {
 class RiwayatController extends GetxController {
   var isLoading = true.obs;
   var tripHistory = <Trip>[].obs;
-  var selectedStatus = 'Semua'.obs;
+  var selectedOrder = 'Terbaru'.obs;
   var expandedIndex = RxnInt();
 
   @override
   void onInit() {
     super.onInit();
-    fetchTripHistory();
+    fetchRiwayat();
   }
 
-  void fetchTripHistory() async {
-    await Future.delayed(const Duration(milliseconds: 4750));
-    tripHistory.value = [
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Jakarta",
-        tujuan: "Bandung",
-        tanggal: "2025-05-05",
-        namaSupir: "Andi",
-        armada: "Bus A1",
-        kedatangan: "2025-05-05 12:00",
-        jumlahPenumpangAwal: 40,
-        status: "Selesai",
-      ),
-      Trip(
-        dari: "Bandung",
-        tujuan: "Surabaya",
-        tanggal: "2025-05-04",
-        namaSupir: "Budi",
-        armada: "Bus B2",
-        kedatangan: null,
-        jumlahPenumpangAwal: 35,
-        status: "Dalam Perjalanan",
-      ),
-      // Tambahkan data lainnya...
-    ];
-    isLoading.value = false;
-  }
+  void fetchRiwayat() async {
+    try {
+      isLoading.value = true;
+      final userId = StorageHelper.userId!;
+      final riwayat = await ApiServices.getRiwayatOperasional(userId: userId);
 
-  List<Trip> get filteredTrips {
-    if (selectedStatus.value == 'Semua') {
-      return tripHistory;
-    } else {
-      return tripHistory
-          .where((trip) => trip.status == selectedStatus.value)
-          .toList();
+      final loadedTrips = riwayat.map((map) => Trip.fromMap(map)).toList()
+        ..sort((a, b) => b.tanggalDateTime.compareTo(a.tanggalDateTime));
+
+      tripHistory.assignAll(loadedTrips);
+      print("✅ Total trip: ${loadedTrips.length}");
+    } catch (e) {
+      print("❌ Gagal memuat riwayat: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  int get total => tripHistory.length;
-  int get selesai =>
-      tripHistory.where((trip) => trip.status == 'Selesai').length;
-  int get dalamPerjalanan =>
-      tripHistory.where((trip) => trip.status == 'Dalam Perjalanan').length;
+  List<Trip> get filteredTrips {
+    List<Trip> result = tripHistory;
+
+    // Urutkan berdasarkan dropdown
+    if (selectedOrder.value == 'Terlama') {
+      result = result.reversed.toList();
+    }
+
+    return result;
+  }
+  
+  int get totalPerjalanan => tripHistory.length;
+
+  int get totalDeteksi {
+    return tripHistory.fold(0, (sum, trip) => sum + trip.deteksi.length);
+  }
+
+  int get totalDrowsy {
+    return tripHistory.fold(0, (sum, trip) {
+      return sum +
+          trip.deteksi.where((d) => d.label.toLowerCase() == 'drowsy').length;
+    });
+  }
+
+  int get persentaseMengantukAllValue {
+    if (totalDeteksi == 0) return 0;
+    return (totalDrowsy / totalDeteksi * 100).round();
+  }
 }
