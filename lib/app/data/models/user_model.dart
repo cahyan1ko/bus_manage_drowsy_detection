@@ -3,12 +3,16 @@ class UserData {
   final String username;
   final String id;
   final bool hasPassword;
+  final String phone;
+  final String address;
 
   UserData({
     required this.email,
     required this.username,
     required this.id,
     this.hasPassword = false,
+    this.phone = '',
+    this.address = '',
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -16,7 +20,9 @@ class UserData {
       email: json['email'] ?? '',
       username: json['username'] ?? '',
       id: json['id'] ?? '',
-      hasPassword: json['has_password'] ?? false,
+      hasPassword: json['hasPassword'] ?? false,
+      phone: json['no_hp'] ?? '', // <- key harus sama
+      address: json['alamat'] ?? '', // <- key harus sama
     );
   }
 }

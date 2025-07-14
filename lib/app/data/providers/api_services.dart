@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:capstone_bus_manage/app/utils/storage_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 import '../models/rute_model.dart';
+import '../models/artikel_model.dart';
 
 class ApiServices {
   static const String baseUrl = 'https://busservice-app.vercel.app/api';
@@ -298,19 +300,81 @@ class ApiServices {
         final data = jsonDecode(response.body);
         final List<dynamic> riwayatList = data['data'];
 
-        print(
-            "✅ Riwayat operasional berhasil diambil: ${riwayatList.length} data");
+        // print(
+        //     "✅ Riwayat operasional berhasil diambil: ${riwayatList.length} data");
 
         // Convert to List<Map<String, dynamic>> for better handling
         return riwayatList.cast<Map<String, dynamic>>();
       } else {
-        print("⚠️ Gagal mengambil riwayat: ${response.statusCode}");
-        print(response.body);
+        // print("⚠️ Gagal mengambil riwayat: ${response.statusCode}");
+        // print(response.body);
         return [];
       }
     } catch (e) {
       print("❌ Error saat mengambil riwayat: $e");
       return [];
+    }
+  }
+
+  static Future<List<ArtikelModel>> fetchArtikel() async {
+    final url = Uri.parse('$baseUrl/artikel');
+    final response = await http.get(url);
+
+    // print("Response body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final List data = json.decode(response.body);
+
+      // // DEBUG setiap item
+      // for (var item in data) {
+      //   print("Artikel item: $item");
+      // }
+
+      return data.map((json) => ArtikelModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Gagal memuat artikel');
+    }
+  }
+
+  static Future<ArtikelModel> fetchArtikelDetail(String artikelId) async {
+    final url = Uri.parse('$baseUrl/artikel/$artikelId');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return ArtikelModel.fromJson(data);
+    } else {
+      throw Exception('Gagal memuat detail artikel');
+    }
+  }
+
+  static Future<bool> updateProfil({String? nomorHp, String? alamat}) async {
+    final userId = await StorageHelper.userId;
+
+    if (userId == null) {
+      throw Exception('User ID tidak ditemukan.');
+    }
+
+    final url = Uri.parse('$baseUrl/edit-profil');
+
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode({
+      'user_id': userId,
+      if (nomorHp != null) 'nomor_hp': nomorHp,
+      if (alamat != null) 'alamat': alamat,
+    });
+
+    final response = await http.put(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print('Profil berhasil diperbarui: ${response.body}');
+      return true;
+    } else {
+      print('Gagal memperbarui profil: ${response.body}');
+      return false;
     }
   }
 }

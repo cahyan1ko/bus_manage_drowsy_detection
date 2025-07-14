@@ -9,4 +9,5 @@ class BerandaController extends GetxController {
     'bus': 'Bus 07',
     'status': 'Siap Berangkat',
   }.obs;
+  
 }

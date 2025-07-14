@@ -1,8 +1,11 @@
+import 'package:capstone_bus_manage/app/modules/riwayat/views/grafik.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/riwayat_controller.dart';
 import '../../../widgets/bottom_nav_bar.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class RiwayatView extends GetView<RiwayatController> {
   @override
@@ -98,19 +101,52 @@ class RiwayatView extends GetView<RiwayatController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Statistik Perjalanan",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 16)),
+                    const Text(
+                      "Statistik Perjalanan",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    ),
                     const SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         buildStatItem("Total Perjalanan",
                             controller.totalPerjalanan.toString()),
                         buildStatItem("Persentase Mengantuk",
-                            "${controller.persentaseMengantukAllValue}%")
+                            "${controller.persentaseMengantukAllValue}%"),
                       ],
                     ),
+
+                    const SizedBox(height: 16),
+
+                    // Tombol Grafik jadi buka dialog
+                    Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => GrafikDialog(
+                              data: controller.grafikDeteksiByTanggal,
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.bar_chart, color: Colors.white),
+                        label: const Text(
+                          'Tampilkan Grafik',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFE25353).withOpacity(0.6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
                   ],
                 ),
               ),

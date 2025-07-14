@@ -11,9 +11,11 @@ class StreamlitWebviewView extends GetView<StreamlitWebviewController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Streamlit WebView'),
+        backgroundColor: Color(0xfff9f9f9),
+        title: const Text('Cek Cuaca Tujuan'),
         centerTitle: true,
       ),
+      backgroundColor: const Color(0xFFF9F9F9),
       body: Stack(
         children: [
           WebViewWidget(controller: controller.webViewController),

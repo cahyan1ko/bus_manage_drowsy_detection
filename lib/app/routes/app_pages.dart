@@ -16,6 +16,8 @@ import '../modules/beranda/bindings/beranda_binding.dart';
 import '../modules/beranda/views/beranda_view.dart';
 import '../modules/detection/bindings/detection_binding.dart';
 import '../modules/detection/views/detection_view.dart';
+import '../modules/edit_profil/bindings/edit_profil_binding.dart';
+import '../modules/edit_profil/views/edit_profil_view.dart';
 import '../modules/informasi/bindings/informasi_binding.dart';
 import '../modules/informasi/views/informasi_view.dart';
 import '../modules/jadwal/bindings/jadwal_binding.dart';
@@ -129,6 +131,11 @@ class AppPages {
       name: _Paths.STREAMLIT_WEBVIEW,
       page: () => const StreamlitWebviewView(),
       binding: StreamlitWebviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFIL,
+      page: () => const EditProfilView(),
+      binding: EditProfilBinding(),
     ),
   ];
 }

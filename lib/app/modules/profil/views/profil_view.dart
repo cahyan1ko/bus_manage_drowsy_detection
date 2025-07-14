@@ -40,8 +40,10 @@ class ProfilView extends GetView<ProfilController> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit), // icon help
+                  onPressed: () {
+                    Get.toNamed('/edit-profil');
+                  },
+                  icon: const Icon(Icons.edit),
                 ),
               ],
             ),
@@ -68,28 +70,28 @@ class ProfilView extends GetView<ProfilController> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.NOTIFIKASI);
-                      },
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: const Color(0xFFE25353),
-                        ),
-                        child: const Icon(
-                          Icons.edit, // icon pensil
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   right: 0,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       Get.toNamed(Routes.NOTIFIKASI);
+                  //     },
+                  //     // child: Container(
+                  //     //   width: 35,
+                  //     //   height: 35,
+                  //     //   decoration: BoxDecoration(
+                  //     //     borderRadius: BorderRadius.circular(100),
+                  //     //     color: const Color(0xFFE25353),
+                  //     //   ),
+                  //     //   child: const Icon(
+                  //     //     Icons.edit, // icon pensil
+                  //     //     color: Colors.white,
+                  //     //     size: 20,
+                  //     //   ),
+                  //     // ),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -106,9 +108,7 @@ class ProfilView extends GetView<ProfilController> {
                     controller.email.value,
                     style: Theme.of(context).textTheme.bodyMedium,
                   )),
-
               const SizedBox(height: 20),
-
               const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -240,17 +240,11 @@ class ProfilView extends GetView<ProfilController> {
                 title: 'Pengaturan',
                 icon: Icons.settings,
                 onPress: () {
-                  final token =
-                      StorageHelper.token; // pastikan kamu punya getter ini
+                  final token = StorageHelper.token;
                   print(
                       "DEBUG: token before going to /settings/history = $token");
                   Get.toNamed(Routes.SETTINGS_HISTORY);
                 },
-              ),
-              ProfileMenuWidget(
-                title: 'Informasi',
-                icon: Icons.info,
-                onPress: () {},
               ),
               ProfileMenuWidget(
                 title: 'Keluar',
@@ -397,7 +391,7 @@ class ProfileMenuWidget extends StatelessWidget {
       title: Text(title,
           style: TextStyle(color: colorText, fontWeight: FontWeight.w600)),
       subtitle: subtitle != null ? Text(subtitle!) : null,
-      trailing: endIcon ? const Icon(Icons.arrow_forward_ios) : null,
+      // trailing: endIcon ? const Icon(Icons.arrow_forward_ios) : null,
       onTap: onPress,
       contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
     );

@@ -126,17 +126,23 @@ class _OnboardingViewState extends State<OnboardingView> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_currentPage == _pages.length - 1) {
-                      _finishOnboarding();
+                      // Cek status login
+                      if (StorageHelper.isLoggedIn) {
+                        Get.offAllNamed(Routes.BERANDA);
+                      } else {
+                        Get.offAllNamed(Routes.LOGIN);
+                      }
                     } else {
                       _controller.nextPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeInOut);
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffe25353),
+                    backgroundColor: const Color(0xffe25353),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

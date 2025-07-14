@@ -26,7 +26,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   void startResendTimer() {
     setState(() {
       _canResend = false;
-      _resendCooldown = 10;
+      _resendCooldown = 300;
     });
 
     _resendTimer?.cancel();

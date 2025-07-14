@@ -73,10 +73,10 @@ class StorageHelper {
   static bool get isLoggedIn => token != null && token!.isNotEmpty;
 
   /// Simpan status bahwa onboarding sudah pernah dilihat
-  static Future<void> setOnboardingSeen() async {
-    await write(_keyOnboardingSeen, true);
-  }
+  // static Future<void> setOnboardingSeen() async {
+  //   await write(_keyOnboardingSeen, true);
+  // }
 
   /// Cek apakah onboarding sudah pernah dilihat
-  static bool get onboardingSeen => read<bool>(_keyOnboardingSeen) ?? false;
+  // static bool get onboardingSeen => read<bool>(_keyOnboardingSeen) ?? false;
 }

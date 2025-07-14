@@ -42,16 +42,8 @@ class _SplashViewState extends State<SplashView>
     _controller.forward().whenComplete(() async {
       await Future.delayed(const Duration(milliseconds: 500));
 
-      final seen = await StorageHelper.onboardingSeen;
-      if (!seen) {
-        Get.offAllNamed(Routes.ONBOARDING);
-      } else {
-        if (StorageHelper.isLoggedIn) {
-          Get.offAllNamed(Routes.BERANDA);
-        } else {
-          Get.offAllNamed(Routes.LOGIN);
-        }
-      }
+      
+      Get.offAllNamed(Routes.ONBOARDING);
     });
   }
 

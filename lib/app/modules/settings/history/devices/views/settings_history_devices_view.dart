@@ -68,8 +68,8 @@ class SettingsHistoryDevicesView
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              elevation: 4,
-              margin: const EdgeInsets.only(bottom: 16),
+              elevation: 0,
+              margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
                 leading: const Icon(
                   Icons.devices_other_rounded,
@@ -79,22 +79,20 @@ class SettingsHistoryDevicesView
                 title: Text(
                   item['device_name'] ?? 'Perangkat Tidak Diketahui',
                   style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.normal,
                     fontSize: 16,
                   ),
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item['device_os'] ?? 'OS tidak dikenal'),
-                    const SizedBox(height: 4),
-                    Text(
-                      item['login_time'] != null
-                          ? formatDate(item['login_time'])
-                          : 'Waktu tidak tersedia',
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
+                subtitle: Text(item['device_os'] ?? 'OS tidak dikenal'),
+                trailing: Text(
+                  item['login_time'] != null
+                      ? formatDate(item['login_time'])
+                      : 'Waktu tidak tersedia',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.right,
                 ),
               ),
             );

@@ -29,13 +29,19 @@ class AuthLoginController extends GetxController {
 
     try {
       final user = await ApiServices.login(username.value, password.value);
+      print("DEBUG: username = ${user.user.username}");
+      print("DEBUG: email = ${user.user.email}");
+      print("DEBUG: hasPassword (manual login) = ${user.user.hasPassword}");
       StorageHelper.saveUser(
         token: user.token,
         email: user.user.email,
         username: user.user.username,
         userId: user.user.id,
         hasPassword: user.user.hasPassword ?? true,
+        phone: user.user.phone, // ⬅ Tambahkan ini
+        address: user.user.address, // ⬅ Tambahkan ini
       );
+
       print("RESPONS API LOGIN: ${user.user.username}, ${user.user.email}");
 
       final deviceInfo = await DeviceHelper.getDeviceInfo();
@@ -91,6 +97,8 @@ class AuthLoginController extends GetxController {
             username: user.user.username,
             userId: user.user.id,
             hasPassword: user.user.hasPassword ?? true,
+            phone: user.user.phone, // ⬅ Tambahkan ini
+            address: user.user.address, // ⬅ Tambahkan ini
           );
 
           final deviceInfo = await DeviceHelper.getDeviceInfo();

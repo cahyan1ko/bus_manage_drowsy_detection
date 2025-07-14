@@ -90,10 +90,9 @@ class Trip {
 
   DateTime get tanggalDateTime {
     try {
-      return DateFormat("yyyy-MM-dd")
-          .parse(tanggal); // sesuaikan format tanggal
+      return DateFormat("yyyy-MM-dd").parse(tanggal);
     } catch (e) {
-      return DateTime(2000); // fallback
+      return DateTime(2000);
     }
   }
 
@@ -118,6 +117,7 @@ class RiwayatController extends GetxController {
   var tripHistory = <Trip>[].obs;
   var selectedOrder = 'Terbaru'.obs;
   var expandedIndex = RxnInt();
+  var showChart = false.obs;
 
   @override
   void onInit() {
@@ -153,7 +153,7 @@ class RiwayatController extends GetxController {
 
     return result;
   }
-  
+
   int get totalPerjalanan => tripHistory.length;
 
   int get totalDeteksi {
@@ -170,5 +170,45 @@ class RiwayatController extends GetxController {
   int get persentaseMengantukAllValue {
     if (totalDeteksi == 0) return 0;
     return (totalDrowsy / totalDeteksi * 100).round();
+  }
+
+  DateTime? parseTanggal(String raw) {
+    try {
+      if (raw.contains(',')) {
+        // Format dengan nama hari
+        return DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz', 'en_US').parse(raw);
+      } else if (raw.length == 10) {
+        return DateFormat('yyyy-MM-dd').parse(raw);
+      } else if (raw.length > 10) {
+        return DateFormat('yyyy-MM-dd HH:mm:ss').parse(raw);
+      }
+    } catch (_) {
+      // fallback
+    }
+    return null;
+  }
+
+  Map<String, Map<String, int>> get grafikDeteksiByTanggal {
+    Map<String, Map<String, int>> hasil = {};
+
+    for (var trip in tripHistory) {
+      for (var deteksi in trip.deteksi) {
+        DateTime? parsedDate = parseTanggal(deteksi.timestamp);
+        if (parsedDate == null) continue;
+
+        final tanggal = DateFormat('yyyy-MM-dd').format(parsedDate);
+        final label = deteksi.label.toLowerCase();
+
+        hasil[tanggal] ??= {'drowsy': 0, 'awake': 0};
+
+        if (label == 'drowsy') {
+          hasil[tanggal]!['drowsy'] = hasil[tanggal]!['drowsy']! + 1;
+        } else if (label == 'awake') {
+          hasil[tanggal]!['awake'] = hasil[tanggal]!['awake']! + 1;
+        }
+      }
+    }
+
+    return hasil;
   }
 }

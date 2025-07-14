@@ -72,16 +72,16 @@ class BottomNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/non_active/Profile.svg',
+                  'assets/icons/non_active/Perjalanan.svg',
                   width: 20,
                   height: 20,
                 ),
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/active/Profile.svg',
+                  'assets/icons/active/Perjalanan.svg',
                   width: 20,
                   height: 20,
                 ),
-                label: 'Detection',
+                label: 'Perjalanan',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(

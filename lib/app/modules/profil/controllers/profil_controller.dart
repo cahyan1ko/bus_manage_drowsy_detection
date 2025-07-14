@@ -20,13 +20,16 @@ class ProfilController extends GetxController {
   }
 
   void loadUserProfile() {
+    print('DEBUG: StorageHelper.phone = ${StorageHelper.phone}');
+    print('DEBUG: StorageHelper.address = ${StorageHelper.address}');
+
     nama.value = StorageHelper.username ?? 'John Doe';
     email.value = StorageHelper.email ?? 'john.doe@example.com';
     nomorHp.value = StorageHelper.phone ?? 'Belum diisi';
     alamat.value = StorageHelper.address ?? 'Belum diisi';
 
     print('DEBUG: hasPassword = ${StorageHelper.hasPassword}');
-    needSetPassword.value = !StorageHelper.hasPassword;
+    needSetPassword.value = !(StorageHelper.hasPassword ?? true);
     print('DEBUG: needSetPassword = ${needSetPassword.value}');
   }
 

@@ -22,6 +22,7 @@ abstract class Routes {
   static const SETTINGS_HISTORY = _Paths.SETTINGS_HISTORY;
   static const SETTINGS_HISTORY_DEVICES = _Paths.SETTINGS_HISTORY_DEVICES;
   static const STREAMLIT_WEBVIEW = _Paths.STREAMLIT_WEBVIEW;
+  static const EDIT_PROFIL = _Paths.EDIT_PROFIL;
 }
 
 abstract class _Paths {
@@ -46,4 +47,5 @@ abstract class _Paths {
   static const SETTINGS_HISTORY = '/settings/history';
   static const SETTINGS_HISTORY_DEVICES = '/settings/history/devices';
   static const STREAMLIT_WEBVIEW = '/streamlit-webview';
+  static const EDIT_PROFIL = '/edit-profil';
 }

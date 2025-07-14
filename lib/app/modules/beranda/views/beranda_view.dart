@@ -1,3 +1,5 @@
+import 'package:capstone_bus_manage/app/data/models/artikel_model.dart';
+import 'package:capstone_bus_manage/app/data/providers/api_services.dart';
 import 'package:capstone_bus_manage/app/modules/jadwal/controllers/jadwal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,13 +52,13 @@ class _BerandaViewState extends State<BerandaView> {
             borderRadius: const BorderRadius.vertical(
               bottom: Radius.circular(10),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                offset: const Offset(0, 4),
-                blurRadius: 8,
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black.withOpacity(0.1),
+            //     offset: const Offset(0, 2),
+            //     blurRadius: 4,
+            //   ),
+            // ],
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SafeArea(
@@ -71,14 +73,14 @@ class _BerandaViewState extends State<BerandaView> {
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.notifications_none,
-                            color: Colors.black),
-                        onPressed: () {
-                          print("Pindah ke informasi");
-                          Get.toNamed(Routes.STREAMLIT_WEBVIEW);
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(Icons.notifications_none,
+                      //       color: Colors.black),
+                      //   onPressed: () {
+                      //     print("Pindah ke informasi");
+                      //     Get.toNamed(Routes.STREAMLIT_WEBVIEW);
+                      //   },
+                      // ),
                       const SizedBox(width: 8),
                       GestureDetector(
                         onTap: () {
@@ -99,33 +101,100 @@ class _BerandaViewState extends State<BerandaView> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
         child: ListView(
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.red[50],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Row(
-                children: [
-                  Icon(
-                    Icons.directions_bus_filled,
-                    color: Color(0xffe25353),
-                    size: 40,
+            // Container(
+            //   padding: const EdgeInsets.all(16),
+            //   margin: const EdgeInsets.only(top: 16),
+            //   decoration: BoxDecoration(
+            //     color: Colors.red[50],
+            //     borderRadius: BorderRadius.circular(12),
+            //   ),
+            //   child: const Row(
+            //     children: [
+            //       Icon(
+            //         Icons.directions_bus_filled,
+            //         color: Color(0xffe25353),
+            //         size: 40,
+            //       ),
+            //       SizedBox(width: 16),
+            //       Expanded(
+            //         child: Text(
+            //           'Selamat bertugas! Cek jadwal perjalananmu hari ini.',
+            //           style: TextStyle(fontSize: 16),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: () {
+                Get.toNamed(Routes.STREAMLIT_WEBVIEW);
+              },
+              borderRadius: BorderRadius.circular(15),
+              child: Card(
+                color: const Color(0xFFFFFFFF),
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Ikon cloud di kiri
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFCCE4F6),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.cloud_outlined,
+                          color: Color(0xFF3B82F6),
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      // Teks (judul & deskripsi)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'Cek Cuaca Tujuan!',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF000000),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Klik untuk cek cuaca',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Ikon arrow di ujung kanan
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Color(0xFF000000),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      'Selamat bertugas! Cek jadwal perjalananmu hari ini.',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             const Text(
               'Jadwal Hari Ini',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -285,43 +354,80 @@ class _BerandaViewState extends State<BerandaView> {
                 ),
               );
             }),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             const Text(
               'Tips n Triks untuk Pengemudi',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            SizedBox(
-              height: 120,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  tipsCard(
-                    icon: Icons.local_cafe,
-                    title: 'Minum Kopi atau Teh',
-                    description:
-                        'Minuman berkafein dapat membantu meningkatkan kewaspadaan saat berkendara.',
+            FutureBuilder<List<ArtikelModel>>(
+              future: ApiServices.fetchArtikel(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Gagal memuat artikel');
+                }
+
+                final articles = snapshot.data!;
+                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      final artikel = articles[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/tips-detail',
+                              arguments: artikel.artikelId);
+                        },
+                        child: Container(
+                          width: 200,
+                          margin: const EdgeInsets.only(right: 12),
+                          child: Card(
+                            color: Colors.transparent, // buat transparan
+                            elevation: 0, // hilangkan bayangan
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(12),
+                                      bottom: Radius.circular(12)),
+                                  child: Image.network(
+                                    artikel.gambar.trim(),
+                                    height: 100,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    artikel.judul,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors
+                                          .black, // pastikan warnanya kontras dengan background
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  tipsCard(
-                    icon: Icons.air,
-                    title: 'Pentingkan Sirkulasi Udara',
-                    description:
-                        'Jaga ventilasi kabin supaya tetap segar agar tidak mudah mengantuk.',
-                  ),
-                  tipsCard(
-                    icon: Icons.access_time,
-                    title: 'Istirahat Teratur',
-                    description:
-                        'Ambil waktu istirahat singkat untuk mengurangi kelelahan dan meningkatkan fokus.',
-                  ),
-                  tipsCard(
-                    icon: Icons.directions_run,
-                    title: 'Gerakkan Tubuh',
-                    description:
-                        'Lakukan peregangan ringan saat berhenti untuk mengurangi rasa lelah.',
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -404,10 +510,11 @@ class _BerandaViewState extends State<BerandaView> {
         width: 280,
         margin: const EdgeInsets.only(right: 12),
         child: Card(
+          margin: const EdgeInsets.only(bottom: 16),
           color: const Color(0xFFffffff),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 3,
+          elevation: 1,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
